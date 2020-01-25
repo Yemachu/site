@@ -1,8 +1,15 @@
-import * as React from "react"
+import * as React from "react";
+
+import Layout from "../layouts/simple";
+
+import {
+	Typography
+} from "@material-ui/core";
 
 export default function()
 {
-	return <React.Fragment>
+	return <Layout>
+		<Typography variant="h1">404</Typography>
 
-	</React.Fragment>;
+	</Layout>;
 }
