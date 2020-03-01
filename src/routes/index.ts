@@ -7,7 +7,14 @@ export {
 	NotFound,
 }
 
-const routes: readonly any[]  = [
+export interface Route
+{
+	path: string;
+	key: string;
+	component: any;
+}
+
+const routes: readonly Route[]  = [
 	{ path: "/", key: "route.home", component: Home },
 ];
 
