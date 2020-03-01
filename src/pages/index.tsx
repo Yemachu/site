@@ -1,12 +1,43 @@
 import * as React from "react";
 
-import Layout from "../layouts/simple";
+import { 
+	Router,
+} from "@reach/router";
 
-import { Link } from "gatsby"
+import {
+	ErrorBoundary,
+	Route,
 
-export default function()
+}from "../utils";
+
+import Routes, { NotFound } from "../routes";
+
+import { Standard as Layout } from "../layouts";
+
+interface Props
 {
-	return <Layout>
-		
+	location: Location
+}
+
+export default function ({location}: Props) {
+	const routes = React.useMemo(function()
+	{
+		return Routes.map(function(route)
+		{
+			return <Route 
+				key={route.key}
+				path={route.path} 
+				component={route.component} 
+			/>;
+		});
+	}, [Routes]);
+
+	return <Layout routes={Routes} location={location}>
+		<ErrorBoundary>
+			<Router>
+				{routes}
+				<Route default component={NotFound} />
+			</Router>
+		</ErrorBoundary>
 	</Layout>;
 }
