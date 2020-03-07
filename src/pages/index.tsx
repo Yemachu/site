@@ -4,6 +4,8 @@ import {
 	Router,
 } from "@reach/router";
 
+import { withPrefix } from "gatsby";
+
 import {
 	ErrorBoundary,
 	Route,
@@ -20,13 +22,14 @@ interface Props
 }
 
 export default function ({location}: Props) {
+	console.log(location);
 	const routes = React.useMemo(function()
 	{
 		return Routes.map(function(route)
 		{
 			return <Route 
 				key={route.key}
-				path={route.path} 
+				path={withPrefix(route.path)} 
 				component={route.component} 
 			/>;
 		});

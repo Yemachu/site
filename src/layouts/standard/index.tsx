@@ -42,7 +42,7 @@ import {
 
 import { Helmet } from "react-helmet";
 
-import { Link } from "gatsby"
+import { Link, withPrefix } from "gatsby"
 import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
 
 
@@ -119,7 +119,7 @@ export default function (props: LayoutProps) {
 	}, [prefersDark]);
 
 	const [drawerOpen, setDrawerOpen] = React.useState(false);
-	const activeTab = props.routes?.findIndex((route)=>route.path==props.location?.pathname) || 0;
+	const activeTab = props.routes?.findIndex((route)=>withPrefix(route.path)==props.location?.pathname) || 0;
 	const tabs = React.useMemo(()=>{
 		return props.routes?.map((route)=>{
 			return <Tab label={route.key} component={Link} to={route.path} />;
