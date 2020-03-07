@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) => {
 		paper: {
 			width: DRAWER_WIDTH,
 		},
+		temporaryDrawerPaper: {
+			maxWidth: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
+		},
 	});
 });
 
@@ -61,7 +64,7 @@ export default function Drawer({isOpen, setIsOpen}: DrawerProps)
 					variant="temporary"
 					onOpen={() => { setIsOpen(true); }}
 					onClose={() => { setIsOpen(false); }}
-					classes={{ paper: classes.paper }}
+					classes={{ paper: `${classes.paper} ${classes.temporaryDrawerPaper}` }}
 				>
 					{content}
 				</SwipeableDrawer>
