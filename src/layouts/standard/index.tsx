@@ -29,6 +29,11 @@ import {
 } from "../../components";
 
 import {
+	useTranslation,
+
+} from "react-i18next"
+
+import {
 	indigo,
 	amber,
 
@@ -118,14 +123,17 @@ export default function (props: LayoutProps) {
 		return createMuiTheme(prefersDark ? DARK_PALETTE : LIGHT_PALETTE);
 	}, [prefersDark]);
 
+	const { t } = useTranslation();
+
 	const [drawerOpen, setDrawerOpen] = React.useState(false);
 	const activeTab = props.routes?.findIndex((route)=>withPrefix(route.path)==props.location?.pathname) || 0;
 	const tabs = React.useMemo(()=>{
 		return props.routes?.map((route)=>{
-			return <Tab label={route.key} component={Link} to={route.path} />;
+			const text = t(route.key, { defaultValue: route.defaultDisplayName });
+			return <Tab label={text} component={Link} to={route.path} />;
 		})
 
-	}, [props.routes]);
+	}, [props.routes, t]);
 
 	return <ThemeProvider theme={theme}>
 		<CssBaseline />

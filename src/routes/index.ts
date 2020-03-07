@@ -11,11 +11,13 @@ export interface Route
 {
 	path: string;
 	key: string;
+	defaultDisplayName: string;
 	component: any;
 }
 
 const routes: readonly Route[]  = [
-	{ path: "/", key: "route.home", component: Home },
+	{ path: "/", key: "route.home", defaultDisplayName: "Home", component: Home },
+	{ path: "/ygo", key: "route.ygo", defaultDisplayName: "Yug-Gi-Oh!", component: NotFound }
 ];
 
 export default routes;
