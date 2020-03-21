@@ -1,0 +1,1 @@
+export type SerialNumber = string;
