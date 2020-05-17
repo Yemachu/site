@@ -28,8 +28,13 @@ import {
 
 } from "../../components";
 
+import i18next from "i18next";
+
+i18next.init();
+
 import {
 	useTranslation,
+	I18nextProvider,
 
 } from "react-i18next"
 
@@ -41,7 +46,6 @@ import {
 
 import {
 	Menu as MenuIcon,
-	Add as AddIcon,
 
 } from "@material-ui/icons";
 
@@ -110,13 +114,13 @@ const LIGHT_PALETTE: ThemeOptions = {
 
 export interface LayoutProps
 {
-	readonly children: JSX.Element | JSX.Element[];
+	readonly children: JSX.Element | readonly JSX.Element[];
 	readonly routes?: readonly Route[];
 	readonly location?: Location;
 }
 
 
-export default function (props: LayoutProps) {
+export default function (props: LayoutProps): JSX.Element {
 	const classes = useStyles();
 	const prefersDark = useMediaQuery("");
 	const theme = React.useMemo(() => {
@@ -140,36 +144,39 @@ export default function (props: LayoutProps) {
 		<Helmet>
 			<meta name="theme-color" content={prefersDark ? indigo[200] : indigo[500]} />
 		</Helmet>
-		<div className={classes.root}>
 
-			<AppBar className={classes.appBar} color={prefersDark ? "default" : "primary"}>
-				<Toolbar>
-					<IconButton
-						edge="start"
-						color="inherit"
-						onClick={(e) => { setDrawerOpen(!drawerOpen); }}
-						className={classes.menuButton}
-					>
-						<MenuIcon />
-					</IconButton>
-					<Typography variant="h6" component="h1" className={classes.title} noWrap >Neo Card Maker</Typography>
-					<LanguageSelector language="en" setLanguage={() => { }} />
-				</Toolbar>
+		<I18nextProvider i18n={i18next}>
 
-				<Paper square>
-					<Tabs value={activeTab} variant="scrollable">
-						{tabs}
-					</Tabs>
-				</Paper>
-			</AppBar>
-			<Drawer isOpen={drawerOpen} setIsOpen={setDrawerOpen} />
-			
-			<main className={classes.content}>
-				<Toolbar />
-				<Tabs value={0} />
+			<div className={classes.root}>
+				<AppBar className={classes.appBar} color={prefersDark ? "default" : "primary"}>
+					<Toolbar>
+						<IconButton
+							edge="start"
+							color="inherit"
+							onClick={(e) => { setDrawerOpen(!drawerOpen); }}
+							className={classes.menuButton}
+						>
+							<MenuIcon />
+						</IconButton>
+						<Typography variant="h6" component="h1" className={classes.title} noWrap >Neo Card Maker</Typography>
+						<LanguageSelector language="en" setLanguage={() => { }} />
+					</Toolbar>
 
-				{props.children}
-			</main>
-		</div>
+					<Paper square>
+						<Tabs value={activeTab} variant="scrollable">
+							{tabs}
+						</Tabs>
+					</Paper>
+				</AppBar>
+				<Drawer isOpen={drawerOpen} setIsOpen={setDrawerOpen}/>
+
+				<main className={classes.content}>
+					<Toolbar />
+					<Tabs value={0} />
+
+					{props.children}
+				</main>
+			</div>
+		</I18nextProvider>
 	</ThemeProvider>
 }
