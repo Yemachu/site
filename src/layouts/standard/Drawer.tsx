@@ -12,10 +12,12 @@ import {
 	Theme,
 } from "@material-ui/core";
 
+import clsx from "clsx";
+
 export interface DrawerProps
 {
 	isOpen: boolean;
-	setIsOpen: (value: boolean) => any;
+	setIsOpen: (value: boolean) => unknown;
 }
 
 const DRAWER_WIDTH = 350;
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => {
 	});
 });
 
-export default function Drawer({isOpen, setIsOpen}: DrawerProps)
+export default function Drawer({isOpen, setIsOpen}: DrawerProps): JSX.Element
 {
 	const classes = useStyles();
 	return React.useMemo(function()
@@ -64,7 +66,7 @@ export default function Drawer({isOpen, setIsOpen}: DrawerProps)
 					variant="temporary"
 					onOpen={() => { setIsOpen(true); }}
 					onClose={() => { setIsOpen(false); }}
-					classes={{ paper: `${classes.paper} ${classes.temporaryDrawerPaper}` }}
+					classes={{ paper: clsx(classes.paper, classes.temporaryDrawerPaper) }}
 				>
 					{content}
 				</SwipeableDrawer>
