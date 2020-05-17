@@ -1,15 +1,12 @@
 import * as React from "react";
+
+import { Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { Card, SerialNumber } from "../models";
+import { Card } from "../models";
 
-interface Props
+export default function CardRenderer(): JSX.Element
 {
-
-}
-
-export default function CardRenderer({}: Props)
-{
-	const serialNumber = useSelector<Card, SerialNumber>(card=> card.serialNumber);
+	const card = useSelector<Card, Card>(card=> card);
 
 	const render = React.useCallback(function(canvas: HTMLCanvasElement | null)
 	{
@@ -19,16 +16,25 @@ export default function CardRenderer({}: Props)
 		if (!ctx){ return; }
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.fillText("Rendered a card.", 0, 16);
-		ctx.fillText(serialNumber, 0, 32);
-	}, [serialNumber]);
+		ctx.fillText(card.name, 0, 16);
+		ctx.fillText(card.serialNumber, 0, 320);
+		ctx.fillText(card.effect, 0, 48);
 
-	return <canvas
+		for (let level=0; level<card.level.value; ++level)
+		{
+			ctx.beginPath()
+			ctx.ellipse(level * 10, 32, 5, 5, 0, 0, Math.PI*2);
+			ctx.closePath();
+			ctx.fill();
+		}
+	}, [card]);
+
+	return <Paper><canvas
 		width={420}
 		height={610}
 		style={{
 			maxWidth: "100%"
 		}}
 		ref={render}
-	/>;
+	/></Paper>;
 }

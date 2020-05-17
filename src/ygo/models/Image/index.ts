@@ -1,9 +1,9 @@
+import { Image } from "./type";
 import reducer from "./reducer";
-import { Effect } from "./type";
 import * as actions from "./actions";
 
 export {
-	Effect as Type,
+	Image as Type,
 	reducer,
 	actions,
-};
+}

@@ -15,14 +15,22 @@ import {
 import Routes, { NotFound } from "../routes";
 
 import { Standard as Layout } from "../layouts";
+import { Button } from "@material-ui/core";
 
 interface Props
 {
-	location: Location
+	location: Location;
 }
 
-export default function ({location}: Props) {
-	console.log(location);
+function Fallback(_: Error, reset: () => void): JSX.Element
+{
+	return <React.Fragment>
+		Error with the card maker.
+		<Button onClick={reset}  variant="outlined">Reset</Button>
+	</React.Fragment>
+}
+
+export default function Index({location}: Props): JSX.Element {
 	const routes = React.useMemo(function()
 	{
 		return Routes.map(function(route)
@@ -36,7 +44,7 @@ export default function ({location}: Props) {
 	}, [Routes]);
 
 	return <Layout routes={Routes} location={location}>
-		<ErrorBoundary>
+		<ErrorBoundary fallback={Fallback}>
 			<Router>
 				{routes}
 				<Route default component={NotFound} />

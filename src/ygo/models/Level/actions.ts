@@ -1,15 +1,16 @@
-import Type from "./type";
+import { AllowedValues, Level } from "./type";
 
 export const SET_LEVEL = "ygo.card.level.SET";
 export const INCREMENT = "ygo.card.level.INCREMENT";
 export const DECREMENT = "ygo.card.level.DECREMENT";
+export const MIRROR = "ygo.card.level.MIRROR";
 
 interface SetAction {
 	type: typeof SET_LEVEL;
-	payload: Type;
+	payload: AllowedValues;
 }
 
-export function set(value: Type): SetAction {
+export function set(value: AllowedValues): SetAction {
 	return { type: SET_LEVEL, payload: value };
 }
 
@@ -32,7 +33,18 @@ export function decrement(): DecrementAction
 	return { type: DECREMENT };
 }
 
+interface MirrorAction {
+	type: typeof MIRROR;
+}
+
+export function mirror(): MirrorAction
+{
+	return { type: MIRROR };
+}
+
 export type ActionTypes = 
 	| SetAction 
 	| IncrementAction 
-	| DecrementAction;
+	| DecrementAction
+	| MirrorAction
+	;

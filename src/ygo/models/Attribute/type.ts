@@ -13,3 +13,6 @@ enum Attribute
 }
 
 export default Attribute;
+export {
+	Attribute,
+}
