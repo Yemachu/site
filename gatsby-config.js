@@ -6,6 +6,8 @@ module.exports = {
   },
   pathPrefix: `/site`,
   plugins: [
+    `gatsby-plugin-material-ui`,
+    `gatsby-plugin-eslint`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-react-helmet`,
     {
