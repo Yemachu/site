@@ -1,31 +1,79 @@
 import * as React from "react";
+import { Helmet } from "react-helmet";
 import { createStore } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import storage from "redux-persist/lib/storage";
 import { Provider } from "react-redux";
 
-import { Grid, Button, ButtonGroup } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { CardRenderer } from "./views";
 import { reducer } from "./models/Card";
-import { randomize, illegalize } from "./models/SerialNumber/actions";
 
-const store = createStore(reducer);
-store.dispatch({type: ""});
+import {
+	AttributeEditor,
+	BackrowTypeEditor,
+	SerialNumberEditor,
+	ImageEditor,
+	LevelEditor,
+	LinkEditor,
+	MonsterTypeEditor,
+	NameEditor,
+	EffectEditor,
+	PendulumEditor,
+	StatsEditor,
 
-export default function YuGiOh()
+} from "./views";
+
+const store = createStore(persistReducer({key: "ygo", storage}, reducer));
+const persistor = persistStore(store);
+
+export default function YuGiOh(): JSX.Element
 {
+	return <React.Fragment>
+		<Helmet>
+			<title>Yu-Gi-Oh! Card maker</title>
+		</Helmet>
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<Grid container spacing={2}>
+					<Grid item xs={12} sm={6} md={12} lg={6} container>
+						<Grid item xs={12}>
+							<CardRenderer />
+						</Grid>
+					</Grid>
 
-	return <Provider store={store}>
-		<Grid container spacing={1}>
-			<Grid item xs={12} sm={6} md={12} lg={6}>
-				<CardRenderer />
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={12} lg={6}>
-				Yu-Gi-Oh! Card maker.
-				<ButtonGroup>
-					<Button onClick={()=>store.dispatch(randomize())}>Randomize</Button>
-					<Button onClick={()=>store.dispatch(illegalize())}>Illegalize</Button>
-				</ButtonGroup>
-			</Grid>
-		</Grid>
-	</Provider>
+					<Grid item xs={12} sm={6} md={12} lg={6} >
+						<Grid container spacing={2}>
+							<Grid item xs={8}>
+								<NameEditor />
+							</Grid>
+							<Grid item xs={4}>
+								<AttributeEditor />
+							</Grid>
+							<Grid item xs={12}>
+								<LevelEditor />
+								<BackrowTypeEditor />
+							</Grid>
+							<Grid item xs={12}>
+								<ImageEditor />
+								<LinkEditor />
+							</Grid>
+							<Grid item xs={12}>
+								<PendulumEditor />
+							</Grid>
+							<Grid item xs={12}>
+								<MonsterTypeEditor />
+								<EffectEditor />
+								<StatsEditor />
+							</Grid>
+							<Grid item xs={12}>
+								<SerialNumberEditor />
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+			</PersistGate>
+		</Provider>
+	</React.Fragment>
 }
