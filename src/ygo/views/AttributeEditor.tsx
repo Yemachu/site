@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import { Select, MenuItem, Divider } from "@material-ui/core";
+import { TextField, MenuItem, Divider } from "@material-ui/core";
 
 import { Card, Attribute } from "../models";
 import * as actions from "../models/Attribute/actions";
@@ -14,10 +14,14 @@ export default function AttributeEditor(): JSX.Element
 	const { t } = useTranslation();
 
 	return React.useMemo(function () {
-		return <Select 
-			value={value} 
-			onChange={(evt) => {dispatch(actions.set(evt.target.value as Attribute));}}
+		return <TextField
 			fullWidth
+			label="Attribute"
+			onChange={(evt) => {dispatch(actions.set(evt.target.value as Attribute));}}
+			select 
+			size="small"
+			value={value} 
+			variant="outlined"
 		>
 			<MenuItem value={Attribute.NONE}>{t("ygo.attribute.None", {defaultValue: "None"})}</MenuItem>
 			<Divider component="li" />
@@ -31,7 +35,7 @@ export default function AttributeEditor(): JSX.Element
 			<Divider component="li" />
 			<MenuItem value={Attribute.SPELL}>{t("ygo:ui.attribute.Spell", { defaultValue: "Spell" })}</MenuItem>
 			<MenuItem value={Attribute.TRAP}>{t("ygo:ui.attribute.Trap", { defaultValue: "Trap" })}</MenuItem>
-		</Select>
+		</TextField>
 
 	}, [value, dispatch]);
 }
