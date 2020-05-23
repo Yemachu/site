@@ -44,6 +44,8 @@ export default function SerialNumberEditor(): JSX.Element
 					<Tooltip title="Randomize">
 						<IconButton 
 							onClick={()=>{dispatch(actions.randomize());}}
+							size="small"
+							edge="end"
 						>
 							<RandomIcon/>
 						</IconButton>
@@ -51,6 +53,8 @@ export default function SerialNumberEditor(): JSX.Element
 				</InputAdornment>
 			}}
 			fullWidth
+			size="small"
+			variant="outlined"
 		/>
 	}, [value, dispatch]);
 
