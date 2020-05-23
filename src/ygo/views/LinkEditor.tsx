@@ -128,8 +128,8 @@ export default function LinkEditor(): JSX.Element
 			</ExpansionPanelDetails>
 			<Divider />
 			<ExpansionPanelActions>
-				<Button onClick={()=>{dispatch(actions.invert());}}>Invert</Button>
-				<Button onClick={()=>{dispatch(actions.clearAll());}}>Clear</Button>
+				<Button size="small" color="primary" onClick={()=>{dispatch(actions.invert());}}>Invert</Button>
+				<Button size="small" color="primary" onClick={()=>{dispatch(actions.clearAll());}}>Clear</Button>
 
 			</ExpansionPanelActions>
 		</ExpansionPanel>
