@@ -6,7 +6,7 @@ import { TextField } from "@material-ui/core";
 import { Card, Name } from "../models";
 import * as actions from "../models/Name/actions";
 
-export default function NameEditor()
+export default function NameEditor(): JSX.Element
 {
 	const dispatch = useDispatch();
 	const value = useSelector<Card, Name>(state => state.name);
@@ -18,6 +18,8 @@ export default function NameEditor()
 			label="Name"
 			InputLabelProps={{shrink: true}}
 			fullWidth
+			size="small"
+			variant="outlined"
 		/>;
 	}, [value, dispatch]);
 }
