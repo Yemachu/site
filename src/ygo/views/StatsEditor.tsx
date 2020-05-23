@@ -6,8 +6,9 @@ import {
 	ExpansionPanelSummary,
 	ExpansionPanelDetails,
 	Grid,
+	Checkbox,
 	TextField,
-	Typography,
+	FormControlLabel,
 
 } from "@material-ui/core";
 
@@ -31,10 +32,13 @@ export default function NameEditor(): JSX.Element
 	return React.useMemo(function() {
 		return <ExpansionPanel>
 			<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-				<Typography>Attack &amp; Defense</Typography>
+				<FormControlLabel
+					label="Attack &amp; Defense"
+					control={<Checkbox />}
+				/>
 			</ExpansionPanelSummary>
 			<ExpansionPanelDetails>
-				<Grid container>
+				<Grid container spacing={2}>
 					<Grid item xs={6}>
 						<TextField
 						value={atk}
