@@ -1,5 +1,5 @@
 import { Image } from "./type"
-import { ActionTypes, SET_IMAGE} from "./actions";
+import { ActionTypes, SET_IMAGE, CROP} from "./actions";
 
 const initialState: Image = {
 	url: "",
@@ -20,6 +20,8 @@ export default function ImageReducer(
 	{
 		case SET_IMAGE:
 			return { ...state, url: action.payload };
+		case CROP:
+			return { ...state, region: action.payload };
 		default:
 			return state;
 	}
