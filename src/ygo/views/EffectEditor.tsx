@@ -32,10 +32,10 @@ export default function EffectEditor(): JSX.Element
 				<TextField
 				value={value}
 				onChange={(evt)=>{dispatch(actions.set(evt.target.value));}}
-				label="Effect"
-				InputLabelProps={{shrink: true}}
 				multiline
 				fullWidth
+				size="small"
+				variant="outlined"
 				/>
 			</ExpansionPanelDetails>
 		</ExpansionPanel>
