@@ -7,6 +7,8 @@ import {
 	Radio,
 	Checkbox,
 	Tooltip,
+	TextField,
+	MenuItem,
 
 	FormControlLabel,
 
@@ -30,7 +32,7 @@ function stopPropagation(e: React.MouseEvent | React.FocusEvent): void
 	e.stopPropagation();
 }
 
-export default function LevelEditor()
+export default function LevelEditor(): JSX.Element
 {
 	const dispatch = useDispatch();
 	const value = useSelector<Card, Level>(state => state.level);
@@ -67,6 +69,20 @@ export default function LevelEditor()
 								onChange={() => { dispatch(actions.mirror()); }}
 								/>
 						</Tooltip>
+					</Grid>
+					<Grid item xs>
+						<TextField
+							label="Star"
+							variant="outlined"
+							select
+							size="small"
+							fullWidth
+						>
+							<MenuItem value={0}>Normal</MenuItem>
+							<MenuItem value={1}>Xyz</MenuItem>
+							<MenuItem value={2}>Dark Synchro</MenuItem>
+						</TextField>
+
 					</Grid>
 				</Grid>
 

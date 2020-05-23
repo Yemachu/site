@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { Paper } from "@material-ui/core";
+import { Card, CardActionArea, CardActions, CardMedia, CardContent, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { Card } from "../models";
+import { CardType } from "../models";
 
 export default function CardRenderer(): JSX.Element
 {
-	const card = useSelector<Card, Card>(card=> card);
+	const card = useSelector<CardType, CardType>(card=> card);
 
 	const render = React.useCallback(function(canvas: HTMLCanvasElement | null)
 	{
@@ -29,12 +29,18 @@ export default function CardRenderer(): JSX.Element
 		}
 	}, [card]);
 
-	return <Paper><canvas
-		width={420}
-		height={610}
-		style={{
-			maxWidth: "100%"
-		}}
-		ref={render}
-	/></Paper>;
+	return <Card>
+		<CardActionArea>
+			<CardMedia 
+				component="canvas"
+				width={420}
+				height={610}
+				ref={render}
+			/>
+		</CardActionArea>
+		<CardActions>
+			<Button size="small" color="primary">Upload</Button>
+			<Button size="small" color="primary">Save</Button>
+		</CardActions>
+		</Card>;
 }

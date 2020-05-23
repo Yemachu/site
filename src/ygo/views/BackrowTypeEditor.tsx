@@ -10,8 +10,12 @@ import {
 	ExpansionPanel,
 	ExpansionPanelSummary,
 	ExpansionPanelDetails,
+	MenuItem,
+	Divider,
 
 } from "@material-ui/core";
+
+import { Autocomplete } from "@material-ui/lab";
 
 import {
 	ExpandMore as ExpandMoreIcon,
@@ -39,10 +43,27 @@ export default function BackrowTypeEditor(): JSX.Element
 			</ExpansionPanelSummary>
 			<ExpansionPanelDetails>
 				<Grid container spacing={2}>
-					<Grid item xs={12}>
+					<Grid item xs={8}>
+						<Autocomplete
+							options={["Spell Card", "Trap Card"]}
+							freeSolo
+							renderInput={(params) => <TextField {...params} label="Type" variant="outlined" size="small" />}
+						/>
+
+					</Grid>
+					<Grid item xs={4}>
 						<TextField
 							fullWidth
-						/>
+							variant="outlined"
+							label="Icon"
+							size="small"
+							select
+							InputLabelProps={{shrink: true}}
+						>
+							<MenuItem value={0}>None</MenuItem>
+							<Divider component="li" />
+							<MenuItem value={1}>Continuous</MenuItem>
+						</TextField>
 					</Grid>
 				</Grid>
 			</ExpansionPanelDetails>

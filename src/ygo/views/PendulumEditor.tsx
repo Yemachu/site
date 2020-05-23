@@ -45,19 +45,26 @@ export default function PendulumEditor(): JSX.Element
 						value={0}
 						onChange={(evt)=>{/*dispatch(actions.);*/}}
 						fullWidth
+						size="small"
+						variant="outlined"
 						/>
 					</Grid>
 					<Grid item xs={6}>
 						<TextField
 						value={0}
 						onChange={(evt) => {/* dispatch(actions.);*/}}
-						fullWidth />
+						fullWidth 
+						size="small"
+						variant="outlined"
+						/>
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
 							onChange={(evt) => {/* dispatch(actions.);*/}}
 							multiline
 							fullWidth
+							size="small"
+							variant="outlined"
 							/>
 					</Grid>
 				</Grid>
