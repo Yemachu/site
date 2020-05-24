@@ -13134,6 +13134,26 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+typeface-amiri@^0.0.61:
+  version "0.0.61"
+  resolved "https://registry.yarnpkg.com/typeface-amiri/-/typeface-amiri-0.0.61.tgz#def40c72581c7c82b5eb3b3b02c4edb8bb7c9e50"
+  integrity sha512-mirBvJdLT/tH813p7sdrJY4cHsuzDcGketwnsUz85xPEXS3W96qsN1IhYXrecrGNygpQQQIAfVLc4DhoR8UxsA==
+
+typeface-buenard@^0.0.72:
+  version "0.0.72"
+  resolved "https://registry.yarnpkg.com/typeface-buenard/-/typeface-buenard-0.0.72.tgz#cf2fdea148e4f14521ba52081657d6d42e630725"
+  integrity sha512-aEdfglzZPCyMaJLUTOktgkmvdba9Mqe1c8ZN2uGkZghtDEV17zvKkyPAS+yL0zYGjo7kZe7Zundvbct20Zwq/Q==
+
+typeface-spectral-sc@^0.0.71:
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/typeface-spectral-sc/-/typeface-spectral-sc-0.0.71.tgz#0f85b9f6c0ecef90824194839b8e45ae0de282d5"
+  integrity sha512-KWWdXtRgq0K9FKUQJniP2nLX4XI5ua1neNFyUOwngawN6OYieJ47zhURlyujMw5w7D1tH3K7EOZeQnrWdPpLPw==
+
+typeface-spectral@^0.0.72:
+  version "0.0.72"
+  resolved "https://registry.yarnpkg.com/typeface-spectral/-/typeface-spectral-0.0.72.tgz#2504c164f034186724ed8674e2d991e7bae7281c"
+  integrity sha512-LT2lTLHv2IjftFdMdlYsMctoETXPj9bAHX6DtAd1iHfxoRO7jS/XU63uNdX6L2Bdz1B+T6iE3+hf3BIDR0XwiA==
+
 typescript@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
