@@ -4,14 +4,13 @@ import "typeface-buenard";
 import "typeface-spectral";
 import "typeface-spectral-sc";
 
-const nameCanvas = document.createElement("canvas");
-const nameShadowCanvas = document.createElement("canvas");
-nameCanvas.width = nameShadowCanvas.width = 315;
-nameCanvas.height = nameShadowCanvas.height = 48;
 
-const effectCanvas = document.createElement("canvas");
 
 function renderName(output: CanvasRenderingContext2D, card: Card): void {
+	const nameCanvas = document.createElement("canvas");
+	const nameShadowCanvas = document.createElement("canvas");
+	nameCanvas.width = nameShadowCanvas.width = 315;
+	nameCanvas.height = nameShadowCanvas.height = 48;
 	
 	const ctx = nameCanvas.getContext("2d");
 	if (!ctx) { return; }
@@ -59,6 +58,8 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 }
 
 function renderEffect(output: CanvasRenderingContext2D, card: Card): void {
+	const effectCanvas = document.createElement("canvas");
+	
 	const ctx = effectCanvas.getContext("2d");
 	if (!ctx) { return; }
 
