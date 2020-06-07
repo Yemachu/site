@@ -8,8 +8,10 @@ import LinkEditor from "./LinkEditor";
 import MonsterTypeEditor from "./MonsterTypeEditor";
 import NameEditor from "./NameEditor";
 import PendulumEditor from "./PendulumEditor";
+import RarityEditor from "./RarityEditor";
 import SerialNumberEditor from "./SerialNumberEditor";
 import StatsEditor from "./StatsEditor";
+import TemplateEditor from "./TemplateEditor";
 
 export {
 	AttributeEditor,
@@ -22,6 +24,8 @@ export {
 	MonsterTypeEditor,
 	NameEditor,
 	PendulumEditor,
+	RarityEditor,
 	SerialNumberEditor,
 	StatsEditor,
+	TemplateEditor,
 }
