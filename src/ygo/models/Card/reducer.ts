@@ -8,6 +8,7 @@ import { reducer as LinkReducer } from "../Link";
 import { reducer as MonsterTypeReducer } from "../MonsterType";
 import { reducer as NameReducer } from "../Name";
 import { reducer as PendulumReducer } from "../Pendulum";
+import { reducer as RarityReducer } from "../Rarity";
 import { reducer as SerialNumberReducer } from "../SerialNumber";
 
 import Card from "./type";
@@ -21,6 +22,7 @@ const reducer = combineReducers<Card>({
 	monsterType: MonsterTypeReducer,
 	name: NameReducer,
 	pendulum: PendulumReducer,
+	rarity: RarityReducer,
 	serialNumber: SerialNumberReducer,
 });
 

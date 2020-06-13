@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { createStore } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import storage from "redux-persist/lib/storage";
+import * as storage from "localforage";
 import { Provider } from "react-redux";
 
 import { Grid } from "@material-ui/core";
@@ -21,7 +21,9 @@ import {
 	NameEditor,
 	EffectEditor,
 	PendulumEditor,
+	RarityEditor,
 	StatsEditor,
+	TemplateEditor,
 
 } from "./views";
 
@@ -45,6 +47,12 @@ export default function YuGiOh(): JSX.Element
 
 					<Grid item xs={12} sm={6} md={12} lg={6} >
 						<Grid container spacing={2}>
+							<Grid item xs={6}>
+								<TemplateEditor />
+							</Grid>
+							<Grid item xs={6}>
+								<RarityEditor />
+							</Grid>
 							<Grid item xs={8}>
 								<NameEditor />
 							</Grid>

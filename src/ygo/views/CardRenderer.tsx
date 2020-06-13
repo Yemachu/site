@@ -22,7 +22,7 @@ export default function CardRenderer(): JSX.Element
 				component="canvas"
 				width={420}
 				height={610}
-				style={{maxWidth: "100%"}}
+				style={{maxWidth: "100%", margin: "0 auto"}}
 				ref={r}
 			/>
 		</CardActionArea>

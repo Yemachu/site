@@ -8,6 +8,7 @@ import { Type as Link } from "./Link";
 import { Type as MonsterType } from "./MonsterType";
 import { Type as Name } from "./Name";
 import { Type as Pendulum } from "./Pendulum";
+import { Type as Rarity } from "./Rarity";
 import { Type as SerialNumber } from "./SerialNumber";
 
 export {
@@ -21,5 +22,6 @@ export {
 	MonsterType,
 	Name,
 	Pendulum,
+	Rarity,
 	SerialNumber,
 }

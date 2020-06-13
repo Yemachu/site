@@ -39,6 +39,24 @@ function stopPropagation(e: React.MouseEvent | React.FocusEvent): void {
 	e.stopPropagation();
 }
 
+interface NumberFormatterProps
+{
+	readonly inputRef: (instance: NumberFormat | null) => void;
+	readonly onChange: (event: { target: { value: string } }) => void;
+}
+
+function NumberFormatter({ inputRef, onChange, ...other}: NumberFormatterProps): JSX.Element
+{
+	return <NumberFormat
+		{...other}
+		getInputRef={inputRef}
+		onValueChange={values => {
+			onChange({ target: { value: values.floatValue } });
+		}}
+		isNumericString
+	/>
+}
+
 export default function ImageEditor(): JSX.Element {
 	const dispatch = useDispatch();
 	const value = useSelector<Card, Image>(card => card.image);
@@ -94,11 +112,17 @@ export default function ImageEditor(): JSX.Element {
 						</Grid>
 						<Grid item xs={6}>
 							<TextField
+								value={value.region.x}
 								label={t("ygo:ui.image.X", { defaultValue: "X" })}
-								type="number"
+								onChange={(evt) => {
+									dispatch(actions.crop({ ...value.region, x: Number(evt.target.value) }));
+								}}
 								size="small"
-								variant="outlined"
 								fullWidth
+								InputProps={{
+									inputComponent: NumberFormatter as any
+								}}
+								variant="outlined"
 							/>
 						</Grid>
 						<Grid item xs={6}>
@@ -106,10 +130,13 @@ export default function ImageEditor(): JSX.Element {
 								value={value.region.y}
 								label={t("ygo:ui.image.Y", { defaultValue: "Y" })}
 								onChange={(evt) => {
+									dispatch(actions.crop({ ...value.region, y: Number(evt.target.value) }));
 								}}
 								size="small"
-								type="number"
 								fullWidth
+								InputProps={{
+									inputComponent: NumberFormatter as any
+								}}
 								variant="outlined"
 							/>
 						</Grid>
@@ -118,10 +145,13 @@ export default function ImageEditor(): JSX.Element {
 								value={value.region.width}
 								label={t("ygo:ui.image.Width", { defaultValue: "Width" })}
 								onChange={(evt) => {
+									dispatch(actions.crop({ ...value.region, width: Number(evt.target.value) }));
 								}}
 								size="small"
-								type="number"
 								fullWidth
+								InputProps={{
+									inputComponent: NumberFormatter as any
+								}}
 								variant="outlined"
 							/>
 						</Grid>
@@ -134,7 +164,9 @@ export default function ImageEditor(): JSX.Element {
 									dispatch(actions.crop({...value.region, height: Number(evt.target.value)}))
 								}}
 								size="small"
-								type="number"
+								InputProps={{
+									inputComponent: NumberFormatter as any
+								}}
 								variant="outlined"
 
 							/>
