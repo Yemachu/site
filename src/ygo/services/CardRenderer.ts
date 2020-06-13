@@ -4,6 +4,7 @@ import "typeface-buenard";
 import "typeface-spectral";
 import "typeface-spectral-sc";
 
+import Xyz from "./Xyz.png";
 
 
 function renderName(output: CanvasRenderingContext2D, card: Card): void {
@@ -48,7 +49,7 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 	ctx.fillStyle = gradient;
 	ctx.fillRect(0, 0, nameCanvas.width, nameCanvas.height);
 	ctx.shadowColor = "rgba(0,0,0,0.5)";
-	ctx.shadowBlur = 1;
+	ctx.shadowBlur = 0;
 	ctx.shadowOffsetX = 0.25;
 	ctx.shadowOffsetY = 1;
 	ctx.drawImage(nameShadowCanvas, 0, 0);
@@ -66,6 +67,11 @@ function renderEffect(output: CanvasRenderingContext2D, card: Card): void {
 	output.drawImage(effectCanvas, 32, 400);
 }
 
+function renderSerialNumber(output: CanvasRenderingContext2D, card: Card): void {
+	
+	output.fillText(card.serialNumber, 0, 320);
+}
+
 export function render(canvas: HTMLCanvasElement | null, card: Card): void
 {
 	if (!canvas) { return; }
@@ -73,15 +79,11 @@ export function render(canvas: HTMLCanvasElement | null, card: Card): void
 	const ctx = canvas.getContext("2d");
 	if (!ctx) { return; }
 
-
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = "#d46427";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = "black";
-	renderName(ctx, card);
 
-	ctx.fillText(card.serialNumber, 0, 320);
-	//ctx.fillText(card.effect, 0, 48);
+	renderName(ctx, card);
+	renderSerialNumber(ctx, card);
 
 	for (let level = 0; level < card.level.value; ++level) {
 		ctx.beginPath()
