@@ -24,7 +24,7 @@ export default function RarityEditor(): JSX.Element
 			fullWidth
 			InputLabelProps={{shrink: true}}
 			label={t("ygo:ui.rarity", { defaultValue: "Rarity" })}
-			onChange={(evt)=>{dispatch(actions.set(evt.target.value as Rarity)); console.log(evt.target.value);}}
+			onChange={(evt)=>{dispatch(actions.set(evt.target.value as Rarity)); }}
 			select
 			size="small"
 			value={value}

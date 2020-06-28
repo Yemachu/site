@@ -8,6 +8,7 @@ import { Type as Name } from "../Name";
 import { Type as Pendulum } from "../Pendulum";
 import { Type as Rarity } from "../Rarity";
 import { Type as SerialNumber } from "../SerialNumber";
+import { Type as Template } from "../Template";
 
 export default interface Card
 {
@@ -21,4 +22,5 @@ export default interface Card
 	readonly pendulum: Pendulum;
 	readonly rarity: Rarity;
 	readonly serialNumber: SerialNumber;
+	readonly template: Template;
 }

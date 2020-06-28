@@ -10,6 +10,7 @@ import { reducer as NameReducer } from "../Name";
 import { reducer as PendulumReducer } from "../Pendulum";
 import { reducer as RarityReducer } from "../Rarity";
 import { reducer as SerialNumberReducer } from "../SerialNumber";
+import { reducer as TemplateReducer } from "../Template";
 
 import Card from "./type";
 
@@ -24,6 +25,7 @@ const reducer = combineReducers<Card>({
 	pendulum: PendulumReducer,
 	rarity: RarityReducer,
 	serialNumber: SerialNumberReducer,
+	template: TemplateReducer,
 });
 
 export default reducer;
