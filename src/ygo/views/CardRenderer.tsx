@@ -28,11 +28,11 @@ export default function CardRenderer(): JSX.Element
 		</CardActionArea>
 		<CardActions>
 			<Button size="small" color="primary">Upload</Button>
-			<Button size="small" color="primary" onClick={()=>{
+			<Button size="small" color="primary" onClick={async ()=>{
 				const canvas = document.createElement("canvas");
 				canvas.width = 420;
 				canvas.height = 610;
-				render(canvas, card);
+				await render(canvas, card);
 				canvas.toBlob((blob) => { if (blob) { saveAs(blob, (card.name.replace(/[^A-Za-z0-9\-_ ]/g, "") || "Card") + ".png");}});
 			}}>Save</Button>
 		</CardActions>
