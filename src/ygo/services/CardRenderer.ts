@@ -4,7 +4,6 @@ import "typeface-buenard";
 import "typeface-spectral";
 import "typeface-spectral-sc";
 
-import Xyz from "./Xyz.png";
 import * as Attributes from "../images/attribute";
 import * as Borders from "../images/border";
 import * as Stars from "../images/star";
