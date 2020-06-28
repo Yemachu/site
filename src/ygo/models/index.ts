@@ -1,27 +1,13 @@
-import { Type as Attribute } from "./Attribute";
-import { Type as BackrowType } from "./BackrowType";
-import { Type as Card } from "./Card";
-import { Type as Effect } from "./Effect";
-import { Type as Image } from "./Image"; 
-import { Type as Level } from "./Level";
-import { Type as Link } from "./Link";
-import { Type as MonsterType } from "./MonsterType";
-import { Type as Name } from "./Name";
-import { Type as Pendulum } from "./Pendulum";
-import { Type as Rarity } from "./Rarity";
-import { Type as SerialNumber } from "./SerialNumber";
-
-export {
-	Attribute,
-	BackrowType,
-	Card,
-	Effect,
-	Image,
-	Level,
-	Link,
-	MonsterType,
-	Name,
-	Pendulum,
-	Rarity,
-	SerialNumber,
-}
+export { Type as Attribute } from "./Attribute";
+export { Type as BackrowType } from "./BackrowType";
+export { Type as Card } from "./Card";
+export { Type as Effect } from "./Effect";
+export { Type as Image } from "./Image"; 
+export { Type as Level } from "./Level";
+export { Type as Link } from "./Link";
+export { Type as MonsterType } from "./MonsterType";
+export { Type as Name } from "./Name";
+export { Type as Pendulum } from "./Pendulum";
+export { Type as Rarity } from "./Rarity";
+export { Type as SerialNumber } from "./SerialNumber";
+export { Type as Template } from "./Template";
