@@ -112,10 +112,10 @@ export default function ImageEditor(): JSX.Element {
 						</Grid>
 						<Grid item xs={6}>
 							<TextField
-								value={value.region.x}
-								label={t("ygo:ui.image.X", { defaultValue: "X" })}
+								value={value.region.left}
+								label={t("ygo:ui.image.Left", { defaultValue: "Left" })}
 								onChange={(evt) => {
-									dispatch(actions.crop({ ...value.region, x: Number(evt.target.value) }));
+									dispatch(actions.crop({ ...value.region, left: Number(evt.target.value) }));
 								}}
 								size="small"
 								fullWidth
@@ -127,10 +127,10 @@ export default function ImageEditor(): JSX.Element {
 						</Grid>
 						<Grid item xs={6}>
 							<TextField
-								value={value.region.y}
-								label={t("ygo:ui.image.Y", { defaultValue: "Y" })}
+								value={value.region.right}
+								label={t("ygo:ui.image.Right", { defaultValue: "Right" })}
 								onChange={(evt) => {
-									dispatch(actions.crop({ ...value.region, y: Number(evt.target.value) }));
+									dispatch(actions.crop({ ...value.region, right: Number(evt.target.value) }));
 								}}
 								size="small"
 								fullWidth
@@ -142,10 +142,10 @@ export default function ImageEditor(): JSX.Element {
 						</Grid>
 						<Grid item xs={6}>
 							<TextField
-								value={value.region.width}
-								label={t("ygo:ui.image.Width", { defaultValue: "Width" })}
+								value={value.region.top}
+								label={t("ygo:ui.image.Top", { defaultValue: "Top" })}
 								onChange={(evt) => {
-									dispatch(actions.crop({ ...value.region, width: Number(evt.target.value) }));
+									dispatch(actions.crop({ ...value.region, top: Number(evt.target.value) }));
 								}}
 								size="small"
 								fullWidth
@@ -158,10 +158,10 @@ export default function ImageEditor(): JSX.Element {
 						<Grid item xs={6}>
 							<TextField
 								fullWidth
-								value={value.region.height}
-								label={t("ygo:ui.image.Height", { defaultValue: "Height" })}
+								value={value.region.bottom}
+								label={t("ygo:ui.image.Bottom", { defaultValue: "Bottom" })}
 								onChange={(evt) => {
-									dispatch(actions.crop({...value.region, height: Number(evt.target.value)}))
+									dispatch(actions.crop({...value.region, bottom: Number(evt.target.value)}))
 								}}
 								size="small"
 								InputProps={{

@@ -4,7 +4,6 @@ import "typeface-buenard";
 import "typeface-spectral";
 import "typeface-spectral-sc";
 
-import Xyz from "./Xyz.png";
 import * as Attributes from "../images/attribute";
 import * as Borders from "../images/border";
 import * as Stars from "../images/star";
@@ -65,33 +64,73 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 	ctx.drawImage(nameShadowCanvas, 0, 0);
 	ctx.restore();
 
+
+
+
 	output.drawImage(nameCanvas, 32, 24);
 }
 
-function renderEffect(output: CanvasRenderingContext2D, card: Card): void {
-	const effectCanvas = document.createElement("canvas");
-	
-	const ctx = effectCanvas.getContext("2d");
-	if (!ctx) { return; }
+function renderEffect(output: CanvasRenderingContext2D, card: Card): void 
+{
+	const paragraphs = card.effect.split("\n").map(paragraph => paragraph.split(/\s/g));
+	let lines: string[][];
+	let fontSize = 16;
 
-	output.drawImage(effectCanvas, 32, 400);
+	do
+	{
+		lines = [];
+		output.font = `400 ${fontSize}px "Spectral", sans-serif`;
+		const spaceMinWidth = output.measureText(" ").width;
+		paragraphs.forEach(paragraph => {
+			let activeLine: string[] = [];
+			let lineWidth = -spaceMinWidth;
+			paragraph.forEach(word => 
+			{
+				const wordWidth = output.measureText(word).width;
+				if (lineWidth + spaceMinWidth + wordWidth < 350)
+				{
+					activeLine.push(word);
+					lineWidth += spaceMinWidth + wordWidth;
+				}
+				else
+				{
+					lines.push(activeLine);
+					activeLine = [word];
+					lineWidth = wordWidth;
+				}
+			});
+			lines.push(activeLine);
+		});
+		fontSize -= 0.5;
+	} while (lines.length * fontSize > 75 && fontSize > 2)
+
+	lines.forEach((line, index) => output.fillText(line.join(" "), 35, 475 + ((1 + index) * fontSize)));
 }
 
 function renderSerialNumber(output: CanvasRenderingContext2D, card: Card): void {
 	
-	output.fillText(card.serialNumber, 0, 320);
+	output.fillText(card.serialNumber, 20, 580);
 }
 
 async function renderImage(output: CanvasRenderingContext2D, card: Card): Promise<void> {
 	const img = await image(card.image.url);
 
+	const regularArea = { x: 50, y: 110, width: 320, height: 320 };
+	const pendulumArea = { x: 30, y: 110, width: 360, height: 360 };
+	// TODO: Make the used area depend on whether the card is a pendulum card.
+	const area = true ? regularArea : pendulumArea;
+
+	const left   = card.image.region.left   || 0;
+	const right  = card.image.region.right  || 0;
+	const top    = card.image.region.top    || 0;
+	const bottom = card.image.region.bottom || 0;
 
 	output.drawImage(img, 
-		card.image.region.x || 0, 
-		card.image.region.y || 0, 
-		img.width - (card.image.region.width || 0),
-		img.height - (card.image.region.height || 0),
-		48, 128, 320, 320);
+		left, 
+		top, 
+		(img.width - left) - right,
+		(img.height - top) - bottom,
+		area.x, area.y, area.width, area.height);
 }
 
 async function renderBorder(output: CanvasRenderingContext2D, card: Card): Promise<void> 
@@ -133,32 +172,44 @@ async function renderAttribute(output: CanvasRenderingContext2D, card: Card): Pr
 		case Attribute.SPELL:  url = Attributes.Spell; break;
 		case Attribute.TRAP:   url = Attributes.Trap; break;
 	}
-	output.drawImage(await image(url), 0, 0);
+	output.drawImage(await image(url), 350, 28, 40, 40);
 }
 
 async function renderLevel(output: CanvasRenderingContext2D, card: Card): Promise<void> 
 {
 	let url: string;
 	const { value: level, variant, mirrored } = card.level;
+	let leftToRight: boolean;
 	switch(variant)
 	{
 		case Variant.DEFAULT: switch(card.template)
 			{
-				case Template.DARK_SYNCHRO: url = Stars.Negative; break;
-				case Template.XYZ:          url = Stars.Xyz; break;
-				default:                    url = Stars.Normal; break;
+				case Template.DARK_SYNCHRO: url = Stars.Negative; leftToRight = true; break;
+				case Template.XYZ:          url = Stars.Xyz;      leftToRight = true; break;
+				default:                    url = Stars.Normal;   leftToRight = false; break;
 			} 
 			break;
-		case Variant.NORMAL:       url = Stars.Normal; break;
-		case Variant.DARK_SYNCHRO: url = Stars.Negative; break;
-		case Variant.XYZ:          url = Stars.Xyz; break;
+		case Variant.NORMAL:       url = Stars.Normal;   leftToRight = false; break;
+		case Variant.DARK_SYNCHRO: url = Stars.Negative; leftToRight = true; break;
+		case Variant.XYZ:          url = Stars.Xyz;      leftToRight = true; break;
 		default: return; // Cannot render anything.
 	}
+
+	leftToRight = mirrored ? !leftToRight : leftToRight;
 	
 	const img = await image(url)
+	
+	const offset = { x: 43, y: 73 };
 	for(let i=0; i < level; ++i)
 	{
-		output.drawImage(img, i * 28 + 43, 73);
+		if (leftToRight)
+		{
+			output.drawImage(img, i * img.width + offset.x, offset.y);
+		}
+		else
+		{
+			output.drawImage(img, 350 - (i * img.width), offset.y);
+		}
 	}
 }
 

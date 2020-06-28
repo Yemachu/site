@@ -1,9 +1,9 @@
 
 interface Region {
-	readonly x?: number;
-	readonly y?: number;
-	readonly width?: number;
-	readonly height?: number;
+	readonly left?: number;
+	readonly right?: number;
+	readonly top?: number;
+	readonly bottom?: number;
 }
 
 export default interface Image
@@ -12,9 +12,7 @@ export default interface Image
 	readonly region: Region;
 }
 
-
 export {
 	Image,
 	Region,
-
 }
