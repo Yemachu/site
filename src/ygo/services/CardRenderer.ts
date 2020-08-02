@@ -12,7 +12,12 @@ import image from "./ImageCache";
 import scratchpad from "./Scratchpads";
 import { Variant } from "../models/Level";
 
-function renderName(output: CanvasRenderingContext2D, card: Card): void {
+import { go, CancelationToken } from "../../utils";
+
+async function renderName(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void>
+{
+	await go(Promise.resolve(), cancel);
+
 	const nameCanvas = document.createElement("canvas");
 	const nameShadowCanvas = document.createElement("canvas");
 	nameCanvas.width = nameShadowCanvas.width = 315;
@@ -53,7 +58,7 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 	gradient.addColorStop(0.33, "#ddd");
 	gradient.addColorStop(1, "#333");
 
-	ctx.save();
+	/*ctx.save();
 	ctx.globalCompositeOperation = "source-atop";
 	ctx.fillStyle = gradient;
 	ctx.fillRect(0, 0, nameCanvas.width, nameCanvas.height);
@@ -62,7 +67,7 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 	ctx.shadowOffsetX = 0.25;
 	ctx.shadowOffsetY = 1;
 	ctx.drawImage(nameShadowCanvas, 0, 0);
-	ctx.restore();
+	ctx.restore();*/
 
 
 
@@ -70,11 +75,20 @@ function renderName(output: CanvasRenderingContext2D, card: Card): void {
 	output.drawImage(nameCanvas, 32, 24);
 }
 
-function renderEffect(output: CanvasRenderingContext2D, card: Card): void 
+async function renderEffect(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void>
 {
+	await go(Promise.resolve(), cancel);
+
+	const availableHeight = 75 
+		+ (card.monsterType.enabled ? 0 : 16);
+	const position = {
+		x: 35,
+		y: 475 - (card.monsterType.enabled ? 0 : 16)
+	}
+
 	const paragraphs = card.effect.split("\n").map(paragraph => paragraph.split(/\s/g));
 	let lines: string[][];
-	let fontSize = 16;
+	let fontSize = 14;
 
 	do
 	{
@@ -102,18 +116,35 @@ function renderEffect(output: CanvasRenderingContext2D, card: Card): void
 			lines.push(activeLine);
 		});
 		fontSize -= 0.5;
-	} while (lines.length * fontSize > 75 && fontSize > 2)
+	} while (lines.length * fontSize > availableHeight && fontSize > 2)
 
-	lines.forEach((line, index) => output.fillText(line.join(" "), 35, 475 + ((1 + index) * fontSize)));
+	lines.forEach((line, index) => {
+		output.fillText(line.join(" "), position.x, position.y + ((1 + index) * fontSize))
+	});
 }
 
-function renderSerialNumber(output: CanvasRenderingContext2D, card: Card): void {
-	
-	output.fillText(card.serialNumber, 20, 580);
+async function renderMonsterType(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void>
+{
+	await go(Promise.resolve(), cancel);
+
+	if (!card.monsterType.enabled) { return; }
+	const fontSize = 16;
+	output.font = `600 ${fontSize}px "Spectral SC", serif`;
+	output.fillText("[Fariy / Effect]", 35, 475);
 }
 
-async function renderImage(output: CanvasRenderingContext2D, card: Card): Promise<void> {
-	const img = await image(card.image.url);
+async function renderSerialNumber(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void>
+{
+	await go(Promise.resolve(), cancel);
+
+	const fontSize = 16;
+	output.font = `400 ${fontSize}px "Spectral", serif`;
+	output.fillText(card.serialNumber, 20, 592);
+}
+
+async function renderImage(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
+{
+	const img = await go(image(card.image.url), cancel);
 
 	const regularArea = { x: 50, y: 110, width: 320, height: 320 };
 	const pendulumArea = { x: 30, y: 110, width: 360, height: 360 };
@@ -133,7 +164,7 @@ async function renderImage(output: CanvasRenderingContext2D, card: Card): Promis
 		area.x, area.y, area.width, area.height);
 }
 
-async function renderBorder(output: CanvasRenderingContext2D, card: Card): Promise<void> 
+async function renderBorder(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
 {
 	let url: string;
 	switch(card.template)
@@ -148,14 +179,15 @@ async function renderBorder(output: CanvasRenderingContext2D, card: Card): Promi
 		case Template.SPELL:   url = Borders.Spell; break;
 		case Template.TRAP:    url = Borders.Trap; break;
 		case Template.TOKEN:   url = Borders.Token; break;
+		case Template.SKILL:   url = Borders.Skill; break;
 		default: return; // Prevent unneeded errors.
 	}
 
-	output.drawImage(await image(url), 0, 0);
+	output.drawImage(await go(image(url), cancel), 0, 0);
 
 }
 
-async function renderAttribute(output: CanvasRenderingContext2D, card: Card): Promise<void> 
+async function renderAttribute(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
 {
 	let url: string;
 	switch(card.attribute)
@@ -172,10 +204,10 @@ async function renderAttribute(output: CanvasRenderingContext2D, card: Card): Pr
 		case Attribute.SPELL:  url = Attributes.Spell; break;
 		case Attribute.TRAP:   url = Attributes.Trap; break;
 	}
-	output.drawImage(await image(url), 350, 28, 40, 40);
+	output.drawImage(await go(image(url), cancel), 350, 28, 40, 40);
 }
 
-async function renderLevel(output: CanvasRenderingContext2D, card: Card): Promise<void> 
+async function renderLevel(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
 {
 	let url: string;
 	const { value: level, variant, mirrored } = card.level;
@@ -197,7 +229,7 @@ async function renderLevel(output: CanvasRenderingContext2D, card: Card): Promis
 
 	leftToRight = mirrored ? !leftToRight : leftToRight;
 	
-	const img = await image(url)
+	const img = await go(image(url), cancel);
 	
 	const offset = { x: 43, y: 73 };
 	for(let i=0; i < level; ++i)
@@ -213,7 +245,28 @@ async function renderLevel(output: CanvasRenderingContext2D, card: Card): Promis
 	}
 }
 
-export async function render(canvas: HTMLCanvasElement | null, card: Card): Promise<void>
+async function renderCopyright(ctx: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void>
+{
+	await go(Promise.resolve(), cancel);
+
+	const text = card.copyright;
+	
+	const textWidth = ctx.measureText(text).width;
+	const availableWidth = 150;
+
+	const scale = Math.min(availableWidth / Math.max(textWidth, 1), 1);
+
+	ctx.save();
+	ctx.translate(230 + (availableWidth - (textWidth * scale)), 592);
+	ctx.scale(scale, 1);
+
+	ctx.fillText(text, 0, 0);
+	ctx.restore();
+
+	return Promise.resolve();
+}
+
+export async function render(canvas: HTMLCanvasElement | null, card: Card, cancel: Promise<never>): Promise<void>
 {
 	if (!canvas) { return; }
 
@@ -223,12 +276,13 @@ export async function render(canvas: HTMLCanvasElement | null, card: Card): Prom
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = "black";
 
-	try { await renderImage(ctx, card); } catch(e) { /* */ }
-	try { await renderBorder(ctx, card); } catch(e) { /* */} 
-	try { await renderAttribute(ctx, card); } catch(e) { /* */ }
-	try { await renderLevel(ctx, card); } catch(e) { /* */ }
-	renderName(ctx, card);
-	renderEffect(ctx, card);
-	renderSerialNumber(ctx, card);
-
+	try { await renderImage(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderBorder(ctx, card, cancel); } catch(e) { /* */} 
+	try { await renderAttribute(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderLevel(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderName(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderMonsterType(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderEffect(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderSerialNumber(ctx, card, cancel); } catch(e) { /* */ }
+	try { await renderCopyright(ctx, card, cancel); } catch(e) { /* */ }
 }
