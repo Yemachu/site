@@ -13,6 +13,7 @@ import { reducer } from "./models/Card";
 import {
 	AttributeEditor,
 	BackrowTypeEditor,
+	CopyrightEditor,
 	SerialNumberEditor,
 	ImageEditor,
 	LevelEditor,
@@ -75,8 +76,11 @@ export default function YuGiOh(): JSX.Element
 								<EffectEditor />
 								<StatsEditor />
 							</Grid>
-							<Grid item xs={12}>
+							<Grid item xs={6}>
 								<SerialNumberEditor />
+							</Grid>
+							<Grid item xs={6}>
+								<CopyrightEditor />
 							</Grid>
 						</Grid>
 					</Grid>

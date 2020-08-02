@@ -1,6 +1,7 @@
 import AttributeEditor from "./AttributeEditor";
 import BackrowTypeEditor from "./BackrowTypeEditor";
 import CardRenderer from "./CardRenderer";
+export { default as CopyrightEditor } from "./CopyrightEditor";
 import EffectEditor from "./EffectEditor";
 import ImageEditor from "./ImageEditor";
 import LevelEditor from "./LevelEditor";
