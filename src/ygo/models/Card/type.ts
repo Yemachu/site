@@ -1,4 +1,5 @@
 import { Type as Attribute } from "../Attribute";
+import { Type as Copyright } from "../Copyright";
 import { Type as Effect } from "../Effect";
 import { Type as Image } from "../Image";
 import { Type as Link } from "../Link";
@@ -13,6 +14,7 @@ import { Type as Template } from "../Template";
 export default interface Card
 {
 	readonly attribute: Attribute;
+	readonly copyright: Copyright;
 	readonly effect: Effect;
 	readonly image: Image;
 	readonly level: Level;

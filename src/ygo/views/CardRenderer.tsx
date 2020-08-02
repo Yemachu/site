@@ -6,6 +6,7 @@ import { Card as CardType } from "../models";
 import { saveAs } from "file-saver";
 
 import { render } from "../services/CardRenderer";
+import { useCancel } from "../../utils";
 
 export default function CardRenderer(): JSX.Element
 {
@@ -13,7 +14,9 @@ export default function CardRenderer(): JSX.Element
 
 	const r = React.useCallback(function(canvas: HTMLCanvasElement | null)
 	{
-		render(canvas, card);
+		const [token, cancel] = useCancel();
+		render(canvas, card, token);
+		return cancel;
 	}, [card]);
 
 	return <Card>

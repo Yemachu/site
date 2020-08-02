@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 
 import { reducer as AttributeReducer } from "../Attribute";
+import { reducer as CopyrightReducer } from "../Copyright";
 import { reducer as EffectReducer } from "../Effect";
 import { reducer as ImageReducer } from "../Image";
 import { reducer as LevelReducer } from "../Level";
@@ -16,6 +17,7 @@ import Card from "./type";
 
 const reducer = combineReducers<Card>({
 	attribute: AttributeReducer,
+	copyright: CopyrightReducer,
 	effect: EffectReducer,
 	image: ImageReducer,
 	level: LevelReducer,

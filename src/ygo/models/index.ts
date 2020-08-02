@@ -1,6 +1,7 @@
 export { Type as Attribute } from "./Attribute";
 export { Type as BackrowType } from "./BackrowType";
 export { Type as Card } from "./Card";
+export { Type as Copyright } from "./Copyright";
 export { Type as Effect } from "./Effect";
 export { Type as Image } from "./Image"; 
 export { Type as Level } from "./Level";

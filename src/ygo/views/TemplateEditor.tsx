@@ -39,6 +39,7 @@ export default function TemplateEditor(): JSX.Element
 			<MenuItem value={Template.TRAP}>Trap</MenuItem>
 			<Divider component="li" />
 			<MenuItem value={Template.TOKEN}>Token</MenuItem>
+			<MenuItem value={Template.SKILL}>Skill</MenuItem>
 		</TextField>
 
 	}, [dispatch, value]);
