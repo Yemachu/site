@@ -12,6 +12,7 @@ enum Template
 	SPELL = "SPELL",
 	TRAP = "TRAP",
 	TOKEN = "TOKEN",
+	SKILL = "SKILL",
 }
 
 export default Template;
