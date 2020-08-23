@@ -35,8 +35,11 @@ export default function CardRenderer(): JSX.Element
 				const canvas = document.createElement("canvas");
 				canvas.width = 420;
 				canvas.height = 610;
-				await render(canvas, card);
-				canvas.toBlob((blob) => { if (blob) { saveAs(blob, (card.name.replace(/[^A-Za-z0-9\-_ ]/g, "") || "Card") + ".png");}});
+				const [token] = useCancel();
+				await render(canvas, card, token);
+				canvas.toBlob((blob) => { 
+					if (blob) { saveAs(blob, (card.name.replace(/[^A-Za-z0-9\-_ ]/g, "") || "Card") + ".png");}
+				});
 			}}>Save</Button>
 		</CardActions>
 		</Card>;

@@ -48,16 +48,16 @@ export default function YuGiOh(): JSX.Element
 
 					<Grid item xs={12} sm={6} md={12} lg={6} >
 						<Grid container spacing={2}>
-							<Grid item xs={6}>
+							<Grid item xs={12} md={6}>
 								<TemplateEditor />
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={12} md={6}>
 								<RarityEditor />
 							</Grid>
-							<Grid item xs={8}>
+							<Grid item xs={12} md={8}>
 								<NameEditor />
 							</Grid>
-							<Grid item xs={4}>
+							<Grid item xs={12} md={4}>
 								<AttributeEditor />
 							</Grid>
 							<Grid item xs={12}>
@@ -76,10 +76,10 @@ export default function YuGiOh(): JSX.Element
 								<EffectEditor />
 								<StatsEditor />
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={12} md={6}>
 								<SerialNumberEditor />
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={12} md={6}>
 								<CopyrightEditor />
 							</Grid>
 						</Grid>

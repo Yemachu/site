@@ -18,15 +18,23 @@ import {
 
 } from "@material-ui/icons";
 
+import { Type as Pendulum, actions } from "../models/Pendulum";
+
 function stopPropagation(e: React.MouseEvent | React.FocusEvent): void
 {
 	e.stopPropagation();
 }
 
+interface PendulumProvider
+{
+	readonly pendulum: Pendulum;
+}
+
+
 export default function PendulumEditor(): JSX.Element
 {
 	const dispatch = useDispatch();
-	const value = useSelector(state => state);
+	const value = useSelector<PendulumProvider, Pendulum>(state => state.pendulum);
 
 	return React.useMemo(function(){
 		return <ExpansionPanel>
@@ -34,7 +42,12 @@ export default function PendulumEditor(): JSX.Element
 				<FormControlLabel
 					onClick={stopPropagation}
 					onFocus={stopPropagation}
-					control={<Checkbox/>}
+					control={<Checkbox
+						checked={value.enabled}
+						onChange={(evt) => {
+							dispatch(evt.target.checked ? actions.enable() : actions.disable());
+						}}
+					/>}
 					label="Pendulum"
 				/>
 			</ExpansionPanelSummary>
