@@ -1,4 +1,4 @@
-import { Card, Template, Attribute } from "../models";
+import { Card, Template, Attribute, Rarity } from "../models";
 
 import "typeface-buenard";
 import "typeface-spectral";
@@ -10,6 +10,7 @@ import * as Stars from "../images/star";
 
 import image from "./ImageCache";
 import scratchpad from "./Scratchpads";
+
 import { Variant } from "../models/Level";
 
 import { go, CancelationToken } from "../../utils";
@@ -33,7 +34,28 @@ async function renderName(output: CanvasRenderingContext2D, card: Card, cancel: 
 	const innerShadow = nameShadowCanvas.getContext("2d");
 	if (!innerShadow) { return; }
 
-	ctx.font = innerShadow.font = "600 32px \"Spectral SC\", sans-serif";
+	ctx.font = innerShadow.font = card.template == Template.SKILL 
+		? "600 32px sans-serif"
+		: "600 32px \"Spectral SC\", serif";
+	ctx.fillStyle = "#000";
+	switch(card.rarity)
+	{
+		// Common cards use a different color depending on the type of card.
+		case Rarity.Common: switch(card.template)
+			{
+				case Template.XYZ: 
+				case Template.SKILL:
+				case Template.SPELL:
+				case Template.TRAP:
+					ctx.fillStyle = "#fff";
+					break;
+			} 
+			break;
+		case Rarity.Rare: break;
+		case Rarity.UltraRare: break;
+		case Rarity.GhostRare: break;
+		case Rarity.SecretRate: break;
+	}
 
 	const text = card.name;
 	const width = ctx.measureText(text).width;
@@ -79,6 +101,9 @@ async function renderEffect(output: CanvasRenderingContext2D, card: Card, cancel
 {
 	await go(Promise.resolve(), cancel);
 
+	type Word = { value: string; width: number };
+
+	const availableWidth = 350;
 	const availableHeight = 75 
 		+ (card.monsterType.enabled ? 0 : 16);
 	const position = {
@@ -86,40 +111,71 @@ async function renderEffect(output: CanvasRenderingContext2D, card: Card, cancel
 		y: 475 - (card.monsterType.enabled ? 0 : 16)
 	}
 
-	const paragraphs = card.effect.split("\n").map(paragraph => paragraph.split(/\s/g));
-	let lines: string[][];
+	const effect = card.effect.replace(/(?:\{([^}]+|\})\}|\{|\})/g, (_, name) => { switch(name){
+		case "name": return card.name;
+		case "level": return card.level.value.toFixed(0);
+		case "{": return "{";
+		case "}": return "}";
+		default: return "";
+	}});
+
+	const paragraphWords: string[][] = effect.split("\n").map(paragraph => paragraph.split(/\s/g));
+	let paragraphs: Word[][][];
+	let lines: Word[][];
 	let fontSize = 14;
 
 	do
 	{
-		lines = [];
+		paragraphs = [];
 		output.font = `400 ${fontSize}px "Spectral", sans-serif`;
 		const spaceMinWidth = output.measureText(" ").width;
-		paragraphs.forEach(paragraph => {
-			let activeLine: string[] = [];
+		paragraphWords.forEach(paragraph => {
+			lines = [];
+			let activeLine: Word[] = [];
 			let lineWidth = -spaceMinWidth;
 			paragraph.forEach(word => 
 			{
 				const wordWidth = output.measureText(word).width;
-				if (lineWidth + spaceMinWidth + wordWidth < 350)
+				if (lineWidth + spaceMinWidth + wordWidth <= availableWidth)
 				{
-					activeLine.push(word);
+					activeLine.push({value: word, width: wordWidth});
 					lineWidth += spaceMinWidth + wordWidth;
 				}
 				else
 				{
 					lines.push(activeLine);
-					activeLine = [word];
+					activeLine = [{value: word, width: wordWidth}];
 					lineWidth = wordWidth;
 				}
 			});
 			lines.push(activeLine);
+			paragraphs.push(lines);
 		});
 		fontSize -= 0.5;
-	} while (lines.length * fontSize > availableHeight && fontSize > 2)
+	} while (paragraphs.reduce((prev, p) => prev + p.length, 0) * fontSize > availableHeight && fontSize > 2)
 
-	lines.forEach((line, index) => {
-		output.fillText(line.join(" "), position.x, position.y + ((1 + index) * fontSize))
+	let index = 0;
+	paragraphs.forEach(paragraph => {
+		paragraph.forEach((line, currentLine) => {
+
+			if (currentLine != paragraph.length-1)
+			{
+				const spaceMinWidth = output.measureText(" ").width;
+				const taken = line.reduce((total, current) => total + current.width, 0) + spaceMinWidth * line.length;
+				const remaining = availableWidth - taken;
+				const additionalSpaceWidth = remaining / Math.max(line.length, 1);
+				let offset = 0;
+				line.forEach(word => {
+					output.fillText(word.value, position.x + offset, position.y + ((1 + index) * fontSize));
+					offset += additionalSpaceWidth + word.width + spaceMinWidth;
+				});
+			}
+			else
+			{
+				output.fillText(line.map(w=>w.value).join(" "), position.x, position.y + (1 + index) * fontSize);
+			}
+			index++;
+		});
 	});
 }
 
@@ -148,8 +204,16 @@ async function renderImage(output: CanvasRenderingContext2D, card: Card, cancel:
 
 	const regularArea = { x: 50, y: 110, width: 320, height: 320 };
 	const pendulumArea = { x: 30, y: 110, width: 360, height: 360 };
-	// TODO: Make the used area depend on whether the card is a pendulum card.
-	const area = true ? regularArea : pendulumArea;
+	
+	let usePendulumArea = false;
+	switch(card.template)
+	{
+		case Template.UNITY: usePendulumArea = true; break;
+		case Template.SKILL: usePendulumArea = false; break;
+		default:
+			usePendulumArea = card.pendulum.enabled;
+	}
+	const area = usePendulumArea ? pendulumArea : regularArea;
 
 	const left   = card.image.region.left   || 0;
 	const right  = card.image.region.right  || 0;
