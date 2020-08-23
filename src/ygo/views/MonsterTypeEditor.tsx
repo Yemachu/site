@@ -79,7 +79,7 @@ export default function MonsterTypeEditor(): JSX.Element
 	const { t } = useTranslation();
 	const autoCompleteOptions = React.useMemo(function()
 	{
-		return defaultTypes.map((option) => t(option, {defaultValue: option}));
+		return defaultTypes.map((option) => t(option, {defaultValue: option})).sort();
 	}, [t]);
 
 	return React.useMemo(function(){
