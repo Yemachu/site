@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import Layout from "../layouts/simple";
+import { useTranslation } from "react-i18next";
+
+import { StandardLayout } from "../layouts";
 
 import {
 	Typography
@@ -8,8 +10,11 @@ import {
 
 export default function()
 {
-	return <Layout>
+	const { t } = useTranslation();
+	return <StandardLayout>
 		<Typography variant="h1">404</Typography>
-
-	</Layout>;
+		<Typography>
+			
+		</Typography>
+	</StandardLayout>;
 }
