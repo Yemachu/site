@@ -28,6 +28,8 @@ import {
 
 } from "../../components";
 
+import { Sidebar } from "../Compontents";
+
 import i18next from "i18next";
 
 i18next.init();
@@ -120,7 +122,11 @@ export interface LayoutProps
 }
 
 
-export default function (props: LayoutProps): JSX.Element {
+
+
+export default function Layout(props: LayoutProps): JSX.Element
+{
+	const ref = React.useRef<HTMLDivElement>();
 	const classes = useStyles();
 	const prefersDark = useMediaQuery("");
 	const theme = React.useMemo(() => {
@@ -134,7 +140,7 @@ export default function (props: LayoutProps): JSX.Element {
 	const tabs = React.useMemo(()=>{
 		return props.routes?.map((route)=>{
 			const text = t(route.key, { defaultValue: route.defaultDisplayName });
-			return <Tab label={text} component={Link} to={route.path} />;
+			return <Tab key={route.key} label={text} component={Link} to={route.path} />;
 		})
 
 	}, [props.routes, t]);
@@ -168,15 +174,17 @@ export default function (props: LayoutProps): JSX.Element {
 						</Tabs>
 					</Paper>
 				</AppBar>
-				<Drawer isOpen={drawerOpen} setIsOpen={setDrawerOpen}/>
+				<Drawer isOpen={drawerOpen} setIsOpen={setDrawerOpen} ref={ref}/>
 
 				<main className={classes.content}>
 					<Toolbar />
 					<Tabs value={0} />
 
-					{props.children}
+					<Sidebar.Provider value={ref}>
+						{props.children}
+					</Sidebar.Provider>
 				</main>
 			</div>
 		</I18nextProvider>
 	</ThemeProvider>
-}
+};
