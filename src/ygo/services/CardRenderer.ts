@@ -9,7 +9,6 @@ import * as Borders from "../images/border";
 import * as Stars from "../images/star";
 
 import image from "./ImageCache";
-import scratchpad from "./Scratchpads";
 
 import { Variant } from "../models/Level";
 
@@ -24,10 +23,6 @@ async function renderName(output: CanvasRenderingContext2D, card: Card, cancel: 
 	nameCanvas.width = nameShadowCanvas.width = 315;
 	nameCanvas.height = nameShadowCanvas.height = 48;
 
-	scratchpad({ width: 315, height: 48 });
-	scratchpad({ width: 315, height: 48 });
-	
-	
 	const ctx = nameCanvas.getContext("2d");
 	if (!ctx) { return; }
 	
@@ -198,6 +193,18 @@ async function renderSerialNumber(output: CanvasRenderingContext2D, card: Card, 
 	output.fillText(card.serialNumber, 20, 592);
 }
 
+function usePendulumArea(card: Card): boolean
+{
+	let usePendulumArea = false;
+	switch (card.template) {
+		case Template.UNITY: usePendulumArea = true; break;
+		case Template.SKILL: usePendulumArea = false; break;
+		default:
+			usePendulumArea = card.pendulum.enabled;
+	}
+	return usePendulumArea;
+}
+
 async function renderImage(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
 {
 	const img = await go(image(card.image.url), cancel);
@@ -205,15 +212,7 @@ async function renderImage(output: CanvasRenderingContext2D, card: Card, cancel:
 	const regularArea = { x: 50, y: 110, width: 320, height: 320 };
 	const pendulumArea = { x: 30, y: 110, width: 360, height: 360 };
 	
-	let usePendulumArea = false;
-	switch(card.template)
-	{
-		case Template.UNITY: usePendulumArea = true; break;
-		case Template.SKILL: usePendulumArea = false; break;
-		default:
-			usePendulumArea = card.pendulum.enabled;
-	}
-	const area = usePendulumArea ? pendulumArea : regularArea;
+	const area = usePendulumArea(card) ? pendulumArea : regularArea;
 
 	const left   = card.image.region.left   || 0;
 	const right  = card.image.region.right  || 0;
@@ -230,6 +229,7 @@ async function renderImage(output: CanvasRenderingContext2D, card: Card, cancel:
 
 async function renderBorder(output: CanvasRenderingContext2D, card: Card, cancel: CancelationToken): Promise<void> 
 {
+	const pendulum = usePendulumArea(card);
 	let url: string;
 	switch(card.template)
 	{
