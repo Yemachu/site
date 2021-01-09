@@ -1,18 +1,27 @@
-import * as React from "react";
+import React, { createContext, useContext } from "react";
 
-interface Errorable
-{
-	error?: Error;
+export type ErrorBoundaryFallbackProps = {
+	readonly error: Error;
+	reset(): void;
+};
+
+export type ErrorBoundaryProps = {
+	readonly children: React.ReactNode;
+	readonly fallback?: React.ReactNode;
+};
+
+type ErrorBoundaryState = {
+	readonly error?: Error;
 }
 
-interface Props extends React.ComponentProps<"div">
-{
-	fallback?(error: Error, reset: () => void): React.ReactNode;
-}
+const fallbackContext = createContext<ErrorBoundaryFallbackProps>({
+	error: new Error("[useFallbackContext()] should only be used from the fallback provided to an <ErrorBoundary />"),
+	reset: () => {/* NOOP */}
+});
 
-export default class ErrorBoundary extends React.Component<Props, Errorable>
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState>
 {
-	constructor(props: Props)
+	constructor(props: ErrorBoundaryProps)
 	{
 		super(props);
 		this.state = { };
@@ -25,17 +34,32 @@ export default class ErrorBoundary extends React.Component<Props, Errorable>
 
 	render(): React.ReactNode
 	{
-		if (this.state.error)
+		const {
+			children,
+			fallback
+		} = this.props;
+		const error = this.state.error;
+
+		if (error)
 		{
-			const fallback = this.props.fallback;
-			return fallback ? fallback(this.state.error, () => this.reset()) : null;
+			return fallback
+			? <fallbackContext.Provider value={{
+				error,
+				reset: () => this.reset()
+			}}>{fallback}</fallbackContext.Provider>
+			: null;
 		}
-		return this.props.children;
+		return children || null;
 	}
 
-	static getDerivedStateFromError(error: Error): Errorable
+	static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState>
 	{
-		return { error: error }
+		return { error };
 	}
 	
+}
+
+export const useFallbackContext = () =>
+{
+	return useContext(fallbackContext);
 }

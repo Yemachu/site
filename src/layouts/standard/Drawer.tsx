@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => {
 	});
 });
 
-export default function Drawer({isOpen, setIsOpen}: DrawerProps): JSX.Element
+export default React.forwardRef(function Drawer({isOpen, setIsOpen}: DrawerProps, ref: React.Ref<HTMLDivElement>)
 {
 	const classes = useStyles();
 	return React.useMemo(function()
@@ -47,6 +47,10 @@ export default function Drawer({isOpen, setIsOpen}: DrawerProps): JSX.Element
 		const content = <React.Fragment>
 			<Toolbar />
 			<Divider />
+
+			<div ref={ref}>
+
+			</div>
 		</React.Fragment>
 
 		return <div className={classes.drawer}>
@@ -73,4 +77,4 @@ export default function Drawer({isOpen, setIsOpen}: DrawerProps): JSX.Element
 			</Hidden>
 		</div>
 	}, [isOpen, setIsOpen, classes]);
-}
+});

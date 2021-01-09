@@ -16,6 +16,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-helmet": "^5.0.15",
     "@types/react-redux": "^7.1.7",
+    "@types/react-syntax-highlighter": "^13.5.0",
     "@types/redux": "^3.6.0",
     "axios": "^0.19.1",
     "clsx": "^1.1.0",
@@ -42,13 +43,17 @@
     "react-i18next": "^11.3.1",
     "react-number-format": "^4.4.1",
     "react-redux": "^7.2.0",
+    "react-syntax-highlighter": "^15.4.3",
     "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "rxjs": "^6.6.3",
     "typeface-amiri": "^0.0.61",
     "typeface-buenard": "^0.0.72",
     "typeface-spectral": "^0.0.72",
-    "typeface-spectral-sc": "^0.0.71"
+    "typeface-spectral-sc": "^0.0.71",
+    "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.29.0",
