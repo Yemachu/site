@@ -21,7 +21,7 @@ const ProjectElement = ({card}: ProjectElementProps): JSX.Element =>
         <Avatar/>
       </Badge>
     </ListItemAvatar>
-    <ListItemText primary={card.name} secondary="Spellcaster/Normal" />
+    <ListItemText primary={card.name} />
   </>
 }
 
