@@ -36,17 +36,20 @@ const Fallback = (): JSX.Element =>
 const YgoCardMakerPage = () =>
 {
   return <Provider store={appState}>
-    <PersistGate persistor={persistor} loading={null}>
-      <StandardLayout
-        sidebar={<ErrorBoundary fallback={<Fallback/>}><ProjectEditor/></ErrorBoundary>}
-        header={<ErrorBoundary><Typography variant="h5" component="h1">Card maker</Typography></ErrorBoundary>}
-        footer={<ErrorBoundary fallback={<Fallback/>}>Footer</ErrorBoundary>}
-      >
-        <ErrorBoundary fallback={<Fallback/>}>
-            <YgoCardMaker/>
-        </ErrorBoundary>
-      </StandardLayout>
-    </PersistGate>
+    <StandardLayout
+      sidebar={<ErrorBoundary fallback={<Fallback/>}>
+        <PersistGate persistor={persistor} loading={null}>
+          <ProjectEditor/>
+        </PersistGate>
+      </ErrorBoundary>}
+      header={<ErrorBoundary fallback={<Fallback/>}><Typography variant="h5" component="h1">Card maker</Typography></ErrorBoundary>}
+    >
+      <ErrorBoundary fallback={<Fallback/>}>
+        <PersistGate persistor={persistor} loading={null}>
+          <YgoCardMaker/>
+        </PersistGate>
+      </ErrorBoundary>
+    </StandardLayout>
   </Provider>
 }
 
