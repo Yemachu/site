@@ -1,20 +1,16 @@
 import * as React from "react";
 
-import { 
-	Router,
-} from "@reach/router";
+import { createStore } from "redux";
+import { Provider } from "react-redux"; 
 
-import { withPrefix } from "gatsby";
+import { Link, withPrefix } from "gatsby";
 
 import {
 	ErrorBoundary,
-	Route,
 
 }from "../utils";
 
-import Routes, { NotFound } from "../routes";
-
-import { Standard as Layout } from "../layouts";
+import { StandardLayout } from "../layouts/Standard";
 import { Button } from "@material-ui/core";
 
 interface Props
@@ -22,33 +18,22 @@ interface Props
 	location: Location;
 }
 
-function Fallback(_: Error, reset: () => void): JSX.Element
+function Fallback(): JSX.Element
 {
 	return <React.Fragment>
 		Error with the card maker.
-		<Button onClick={reset}  variant="outlined">Reset</Button>
 	</React.Fragment>
 }
 
-export default function Index({location}: Props): JSX.Element {
-	const routes = React.useMemo(function()
-	{
-		return Routes.map(function(route)
-		{
-			return <Route 
-				key={route.key}
-				path={withPrefix(route.path)} 
-				component={route.component} 
-			/>;
-		});
-	}, [Routes]);
+const store = createStore(() => 0); 
 
-	return <Layout routes={Routes} location={location}>
-		<ErrorBoundary fallback={Fallback}>
-			<Router>
-				{routes}
-				<Route default component={NotFound} />
-			</Router>
-		</ErrorBoundary>
-	</Layout>;
+export default function Index({location}: Props): JSX.Element {
+	
+	return <Provider store={store}>
+		<StandardLayout>
+			<ErrorBoundary fallback={<Fallback />}>
+				
+			</ErrorBoundary>
+		</StandardLayout>;
+	</Provider>
 }
