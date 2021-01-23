@@ -36,6 +36,7 @@ export const LevelEditor = (props: LevelEditorProps): JSX.Element =>
       max={13} 
       marks 
       value={level?.value || 0} 
+      valueLabelDisplay="auto"
       onChange={(_, value: number|number[]) => {
         // Callback requires potentially accepting multiple values at once,
         // only respond to instances where a single value is supplied.
