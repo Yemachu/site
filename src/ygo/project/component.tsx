@@ -2,15 +2,44 @@ import React, { useState, useCallback } from "react";
 import { Droppable, DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Avatar, Badge, List, ListItem, ListItemAvatar, ListItemText, ListItemIcon } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
+import { 
+  Avatar, 
+  Badge, 
+  IconButton,
+  List, 
+  ListItem, 
+  ListItemAvatar, 
+  ListItemText, 
+  ListItemIcon, 
+  ListItemSecondaryAction, 
+  Typography,
+} from "@material-ui/core";
+import { Add as AddIcon, Delete as DeleteIcon } from "@material-ui/icons";
 
 import { Card } from "../card";
+import { Attribute } from "../card/attribute";
 import { project } from "./model";
-import { add, reorder, select } from "./actions";
+import { add, reorder, select, remove } from "./actions";
 
 type ProjectElementProps = {
   readonly card: Card;
+}
+
+const AttributeFallback = ({card}: ProjectElementProps): JSX.Element =>
+{
+  switch(card.attribute)
+  {
+    case Attribute.DARK: return <>闇</>;
+    case Attribute.DIVINE: return <>神</>;
+    case Attribute.EARTH: return <>㆞</>;
+    case Attribute.FIRE: return <>炎</>;
+    case Attribute.LIGHT: return <>光</>;
+    case Attribute.WATER: return <>水</>;
+    case Attribute.WIND: return <>風</>;
+    case Attribute.SPELL: return <>魔</>;
+    case Attribute.TRAP: return <>罠</>;
+  }
+  return <></>
 }
 
 const ProjectElement = ({card}: ProjectElementProps): JSX.Element =>
@@ -18,10 +47,17 @@ const ProjectElement = ({card}: ProjectElementProps): JSX.Element =>
   return <>
     <ListItemAvatar>
       <Badge badgeContent={card.level.value} anchorOrigin={{vertical: "bottom", horizontal: "right"}} color="primary" overlap="circle">
-        <Avatar/>
+        <Avatar>
+          <AttributeFallback card={card} />
+        </Avatar>
       </Badge>
     </ListItemAvatar>
-    <ListItemText primary={card.name} />
+    <ListItemText primary={<Typography noWrap>{card.name}</Typography>} />
+    <ListItemSecondaryAction>
+      <IconButton edge="end">
+        <DeleteIcon />
+      </IconButton>
+    </ListItemSecondaryAction>
   </>
 }
 
