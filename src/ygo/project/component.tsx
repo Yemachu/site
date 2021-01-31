@@ -81,7 +81,13 @@ export const Project = () =>
 
   return <>
     <List>
-      <ListItem button onClick={()=>dispatch(add(Date.now().toString()))}>
+      <ListItem button onClick={()=>
+        {
+          const id = Date.now().toString();
+          dispatch(add(id));
+          dispatch(select(id)); 
+        }}
+      >
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
