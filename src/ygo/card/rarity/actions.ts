@@ -1,8 +1,9 @@
 import { createAction, ActionType } from "typesafe-actions";
+import { Rarity } from "./type";
 
 export const set = createAction(
   "@ygo/card/rarity/SET",
-  (value: unknown) => value
+  (value: Rarity) => value
 )();
 
 export type RootAction = 
