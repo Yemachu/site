@@ -21,7 +21,7 @@ export const CardEditor = ({ card }: CardEditorProps): JSX.Element =>
   return <Box p={2}>
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6}><TemplateEditor template={card?.template} /></Grid>
-      <Grid item xs={12} sm={6}><RarityEditor /></Grid>
+      <Grid item xs={12} sm={6}><RarityEditor rarity={card?.rarity} disabled={!card} /></Grid>
       <Grid item xs={12} sm={8}><NameEditor name={card?.name} /></Grid>
       <Grid item xs={12} sm={4}><AttributeEditor attribute={card?.attribute} /></Grid>
       <Grid item xs={12}><LevelEditor level={card?.level} /></Grid>
