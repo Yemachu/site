@@ -23,6 +23,7 @@ import { add, reorder, select, remove } from "./actions";
 
 type ProjectElementProps = {
   readonly card: Card;
+  onDelete?(): void;
 }
 
 const AttributeFallback = ({card}: ProjectElementProps): JSX.Element =>
@@ -42,7 +43,7 @@ const AttributeFallback = ({card}: ProjectElementProps): JSX.Element =>
   return <></>
 }
 
-const ProjectElement = ({card}: ProjectElementProps): JSX.Element =>
+const ProjectElement = ({card, onDelete}: ProjectElementProps): JSX.Element =>
 {
   return <>
     <ListItemAvatar>
@@ -52,9 +53,12 @@ const ProjectElement = ({card}: ProjectElementProps): JSX.Element =>
         </Avatar>
       </Badge>
     </ListItemAvatar>
-    <ListItemText primary={<Typography noWrap>{card.name}</Typography>} />
+    <ListItemText 
+      primary={<Typography noWrap>{card.name}</Typography>} 
+      style={{marginRight: 28 /* Secondary action would otherwise overlap the text. */}} 
+    />
     <ListItemSecondaryAction>
-      <IconButton edge="end">
+      <IconButton edge="end" onClick={onDelete}>
         <DeleteIcon />
       </IconButton>
     </ListItemSecondaryAction>
@@ -100,7 +104,7 @@ export const Project = () =>
                 ref={provided.innerRef}
                 selected={id === state.selected}
               >
-                <ProjectElement card={card} />
+                <ProjectElement card={card} onDelete={() => dispatch(remove(id))} />
               </ListItem>
             }
             </Draggable>
