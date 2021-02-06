@@ -1,9 +1,7 @@
 import { createAction, ActionType } from "typesafe-actions";
-import { Attribute } from "./type";
 
 export const set = createAction(
-  "@ygo/card/attribute/SET",
-  (attribute: Attribute) => attribute
+  "@ygo/card/template/SET"
 )();
 
 export type RootAction = 

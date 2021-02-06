@@ -1,20 +1,8 @@
 import { createReducer } from "typesafe-actions";
 
 import { set } from "./actions";
+import { Attribute } from "./type";
 
-export enum Attribute {
-  NONE   = "NONE",
-  DARK   = "DARK",
-  DIVINE = "DIVINE",
-  EARTH  = "EARTH",
-  FIRE   = "FIRE",
-  LIGHT  = "LIGHT",
-  WATER  = "WATER",
-  WIND   = "WIND",
-  SPELL  = "SPELL",
-  TRAP   = "TRAP",
-}
-
-export const attribute = createReducer<Attribute>(Attribute.NONE)
-.handleAction(set, (state) => state)
+export const attribute = createReducer(Attribute.NONE)
+.handleAction(set, (state, action) => action.payload)
 ;

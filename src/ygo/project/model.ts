@@ -22,7 +22,6 @@ export const project = createReducer<Project>(defaultProject)
     ...state, 
     cards: { ...state.cards, [action.meta.id]: newCard },
     order: [ ...state.order, action.meta.id ],
-    selected: action.meta.id,
   };
 })
 .handleAction(reorder, (state, action) => {

@@ -1,13 +1,13 @@
 import { createAction, ActionType } from "typesafe-actions";
-import { Attribute } from "./type";
+import { Rarity } from "./type";
 
 export const set = createAction(
-  "@ygo/card/attribute/SET",
-  (attribute: Attribute) => attribute
+  "@ygo/card/rarity/SET",
+  (value: Rarity) => value
 )();
 
 export type RootAction = 
-| ActionType<typeof set>
+| ActionType<typeof set> 
 ;
 
 export const all = [

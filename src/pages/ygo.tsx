@@ -3,7 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { createStore, applyMiddleware } from "redux";
-import { createEpicMiddleware } from "redux-observable";
+import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { ignoreElements, tap } from "rxjs/operators";
 
 import { persistStore, persistReducer } from "redux-persist";
@@ -15,14 +15,15 @@ import { Button, Typography } from "@material-ui/core";
 import { StandardLayout } from "../layouts";
 import { ErrorBoundary, useFallbackContext } from "../utils";
 import { YgoCardMaker, ProjectEditor, state } from "../ygo";
+import { UploadImgur } from "../ygo/upload/uploadImgur";
 
 const services = createEpicMiddleware();
 const appState = createStore(persistReducer({ key: "ygo", storage, version: 0 }, state), applyMiddleware(services));
 const persistor = persistStore(appState);
-services.run((action$) => action$.pipe(
+services.run(combineEpics((action$) => action$.pipe(
   tap({next: (action) => console.log(action)}),
   ignoreElements()
-));
+), UploadImgur));
 
 const Fallback = (): JSX.Element =>
 {

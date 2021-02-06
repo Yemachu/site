@@ -1,3 +1,10 @@
+const activeEnv = process.env.NODE_ENV;
+require("dotenv").config({
+  path: `.env.${activeEnv}`,
+});
+
+console.log(`Using environment: "${activeEnv}"`);
+
 module.exports = {
   siteMetadata: {
     title: `Neo New Card maker`,
