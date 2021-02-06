@@ -1,6 +1,9 @@
+const activeEnv = process.env.NODE_ENV;
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${activeEnv}`,
 });
+
+console.log(`Using environment: "${activeEnv}"`);
 
 module.exports = {
   siteMetadata: {
