@@ -27,7 +27,8 @@ jobs:
       - run: npm run format
       - run: npm run test
       - run: npm run build
-        env: GATBY_IMGUR_API_KEY={{ secrets.GATBY_IMGUR_API_KEY }}
+        env: 
+          GATBY_IMGUR_API_KEY: {{ secrets.GATBY_IMGUR_API_KEY }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
