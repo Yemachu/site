@@ -29,8 +29,8 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: yarn install --frozen-lockfile
-      - run: npm run test
-      - run: npm run build --prefix-paths
+      - run: yarn run test
+      - run: yarn run build --prefix-paths
         env: 
           GATBY_IMGUR_API_KEY: ${{ secrets.GATBY_IMGUR_API_KEY }}
 
