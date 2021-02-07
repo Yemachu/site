@@ -32,7 +32,7 @@ jobs:
       - run: yarn run test
       - run: yarn run build --prefix-paths
         env: 
-          GATBY_IMGUR_API_KEY: ${{ secrets.GATBY_IMGUR_API_KEY }}
+          GATSBY_IMGUR_API_KEY: ${{ secrets.GATBY_IMGUR_API_KEY }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
