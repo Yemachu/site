@@ -3,14 +3,14 @@ import { useDispatch } from "react-redux";
 import { Button, Card, CardActions, CardMedia } from "@material-ui/core";
 import { upload } from "../upload/actions";
 
-export type RendererProps = {
+export type RendererProps<T> = {
   readonly width: number;
   readonly height: number;
-  readonly render: (canvas: HTMLCanvasElement | null) => void;
-  readonly state: unknown;
+  readonly render: (canvas: HTMLCanvasElement | null, state: T) => void;
+  readonly state: T;
 }
 
-export const Renderer = (props: RendererProps) =>
+export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
 {
   const {
     width,
@@ -20,10 +20,19 @@ export const Renderer = (props: RendererProps) =>
   } = props;
   const dispatch = useDispatch();
 
-  const ref = useCallback((canvas)=>render(canvas), [render, state]);
+  const ref = useCallback((canvas)=>render(canvas, state), [render, state]);
 
   return <Card>
-    <CardMedia component="canvas" width={width} height={height} innerRef={ref} />
+    <CardMedia 
+      component="canvas" 
+      width={width} 
+      height={height} 
+      innerRef={ref} 
+      style={{ 
+        maxWidth: "100%" /* Prevent clipping */, 
+        margin: "0 auto" /* Center the image horizontally*/ 
+      }} 
+    />
     <CardActions>
       <Button onClick={()=>{dispatch(upload("Identifier"))}}>Upload</Button>
     </CardActions>
