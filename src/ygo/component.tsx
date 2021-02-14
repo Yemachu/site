@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid, Box } from "@material-ui/core";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { useSelector, createSelectorHook } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { ErrorBoundary, useFallbackContext } from "../utils";
 import { Renderer } from "./render";
@@ -38,15 +37,10 @@ export const YgoCardMaker = (): JSX.Element =>
       <Grid item xs={12} md={6} style={{overflow: "auto"}}>
         <ErrorBoundary fallback={<Fallback/>}>
           <Renderer render={render} width={420} height={610} state={state.cards[state?.selected||""]}/>
-    
-          {/*<SyntaxHighlighter language="json">
-            {JSON.stringify(state, undefined, "  ")}
-  </SyntaxHighlighter>*/}
         </ErrorBoundary>
       </Grid>
       <Grid item xs={12} md={6}>
         <ErrorBoundary>
-      
           <CardEditor card={state.selected ? state.cards[state.selected] : undefined} />
         </ErrorBoundary>
       </Grid>
