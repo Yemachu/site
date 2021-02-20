@@ -34,7 +34,17 @@ export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
       }} 
     />
     <CardActions>
-      <Button onClick={()=>{dispatch(upload("Identifier"))}}>Upload</Button>
+      <Button 
+        onClick={()=>{
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          render(canvas, state);
+          dispatch(upload(canvas.toDataURL(), "Identifier"));
+        }}
+      >
+        Upload
+      </Button>
     </CardActions>
   </Card>
 
