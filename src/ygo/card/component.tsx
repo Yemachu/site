@@ -9,6 +9,7 @@ import { LevelEditor } from "./level";
 import { AttributeEditor } from "./attribute";
 import { TemplateEditor } from "./template";
 import { RarityEditor } from "./rarity";
+import { EffectEditor } from "./effect";
 
 import { Card } from "./model";
 
@@ -24,5 +25,6 @@ export const CardEditor = ({ card }: CardEditorProps): JSX.Element =>
     <Grid item xs={12} sm={8}><NameEditor name={card?.name} /></Grid>
     <Grid item xs={12} sm={4}><AttributeEditor attribute={card?.attribute} /></Grid>
     <Grid item xs={12}><LevelEditor level={card?.level} /></Grid>
+    <Grid item xs={12}><EffectEditor effect={card?.effect} disabled={!card} /></Grid>
   </Grid>
 }
