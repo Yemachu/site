@@ -26,7 +26,7 @@ const render = (canvas: HTMLCanvasElement | null, card?: Card) => {
   ctx.clearRect(0,0,canvas.width, canvas.height);
   if (!card) return;
 
-  text(ctx, card.name);
+  text(ctx, card);
 }
 
 export const YgoCardMaker = (): JSX.Element =>
