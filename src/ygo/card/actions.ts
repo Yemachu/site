@@ -3,6 +3,7 @@ import { actions as level } from "./level";
 import { actions as attribute } from "./attribute";
 import { actions as template } from "./template";
 import { actions as rarity} from "./rarity";
+import { actions as effect } from "./effect";
 
 export type RootAction =
 | name.RootAction
@@ -10,6 +11,7 @@ export type RootAction =
 | attribute.RootAction
 | template.RootAction
 | rarity.RootAction
+| effect.RootAction
 ;
 
 export { 
@@ -26,4 +28,5 @@ export const all = [
   ...attribute.all,
   ...template.all,
   ...rarity.all,
+  ...effect.all,
 ];
