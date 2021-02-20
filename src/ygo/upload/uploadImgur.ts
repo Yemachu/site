@@ -14,16 +14,12 @@ export const UploadImgur: Epic = (action$, state$, dependencies) =>
     // Multiple uploads can run concurrently.
     mergeMap(([action, state]) => 
     {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      ctx?.fillText(JSON.stringify(state,undefined, 2), 0, 12);
-
       const request = {
         url: "https://api.imgur.com/3/image",
         crossDomain: true,
         method: "POST",
         body: {
-          image: canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""),
+          image: action.payload.replace(/^data:image\/(png|jpg);base64,/, ""),
           type: "base64",
           title: "Image"
         },
