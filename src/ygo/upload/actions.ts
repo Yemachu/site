@@ -2,8 +2,8 @@ import { createAction, ActionType } from "typesafe-actions";
 
 export const upload = createAction(
   "@ygo/upload/UPLOAD",
-  undefined,
-  (id: string) => ({ id })
+  (payload: string, id: string) => payload,
+  (_: unknown, id: string) => ({ id })
 )();
 export const abort = createAction(
   "@ygo/upload/ABORT",
