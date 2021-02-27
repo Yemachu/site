@@ -10,17 +10,71 @@ const paragraphSpacing = 0;
 const maxHeight = 200;
 
 import { font } from "../../utils";
+import { createResources } from "./resources";
+import { Rarity } from "../card/rarity";
+import { BorderAll } from "@material-ui/icons";
 
-type RenderCardComponent = (ctx: CanvasRenderingContext2D, card: Card) => void;
+import * as borders from "../images/border";
 
-export const render = (ctx: CanvasRenderingContext2D, card: Card) =>
+const useResourcesImpl = createResources({
+  border: "",
+  attribute: "",
+  star: "",
+  foil: "",
+  image: "",
+});
+
+const templateUrl = ({template}: Card): string | undefined =>
 {
-  renderImage(ctx, card);
-  renderBorder(ctx, card);
-  renderAttribute(ctx, card);
-  renderName(ctx, card);
-  renderLevel(ctx, card);
-  renderEffect(ctx, card);
+  let fill = "";
+  switch (template) {
+    case Template.NORMAL: return borders.Normal;
+    case Template.EFFECT: return borders.Effect;
+    case Template.RITUAL: return borders.Ritual;
+    case Template.FUSION: return borders.Fusion;
+    case Template.SYNCHRO: return borders.Synchro;
+    case Template.DARK_SYNCHRO: return borders.DarkSynchro;
+    case Template.XYZ: return borders.Xyz;
+    case Template.LINK: return borders.Link;
+    case Template.SPELL: return borders.Spell;
+    case Template.TRAP: return borders.Trap;
+    case Template.TOKEN: return borders.Token;
+    case Template.SKILL: return borders.Skill;
+    default: return ""; // Prevent unneeded errors.
+  }
+}
+
+const foilUrl = ({rarity}: Card): string | undefined =>
+{
+  switch(rarity)
+  {
+    case Rarity.COMMON: break;
+    case Rarity.RARE: break;
+    case Rarity.ULTRA_RARE: break;
+    case Rarity.SECRET_RARE: break;
+    default: return "";
+  }
+}
+
+export const useResources = (card: Card) =>
+{
+  return useResourcesImpl({
+    border: templateUrl(card),
+    foil: foilUrl(card),
+  });
+}
+
+type Resources = ReturnType<typeof useResources>;
+type RenderCardComponent = (ctx: CanvasRenderingContext2D, card: Card, resources: Resources) => void;
+
+export const render = (ctx: CanvasRenderingContext2D, card: Card, resources: Resources) =>
+{
+  renderImage(ctx, card, resources);
+  renderBorder(ctx, card, resources);
+  renderAttribute(ctx, card, resources);
+  renderName(ctx, card, resources);
+  renderLevel(ctx, card, resources);
+  renderEffect(ctx, card, resources);
   
 }
 
@@ -36,33 +90,15 @@ const protectContext = (ctx: CanvasRenderingContext2D, callback: (ctx: CanvasRen
     ctx.restore();
   }
 }
-const renderImage: RenderCardComponent = (ctx, { attribute }) => {
-
+const renderImage: RenderCardComponent = (ctx, _, { image }) => {
+  if (!image) return;
+  ctx.drawImage(image, 0, 0, 320, 320);
 }
 
-const renderBorder: RenderCardComponent = (ctx, { template }) => {
-  let fill = "";
-  switch (template) {
-    case Template.NORMAL: fill = "#ff0"; break;
-    case Template.EFFECT: fill = "#f80"; break;
-    case Template.RITUAL: fill = "#00f"; break;
-    case Template.FUSION: fill = "#80f"; break;
-    case Template.SYNCHRO: fill = "#ccc"; break;
-    case Template.DARK_SYNCHRO: fill = "#666"; break;
-    case Template.XYZ: fill = "#333"; break;
-    case Template.LINK: fill = "#00f"; break;
-    case Template.SPELL: fill = "#0ff"; break;
-    case Template.TRAP: fill = "#f0f"; break;
-    case Template.TOKEN: fill = "#999"; break;
-    case Template.SKILL: fill = "#ccf"; break;
-    default: return; // Prevent unneeded errors.
-  }
+const renderBorder: RenderCardComponent = (ctx, { template }, { border }) => {
 
-  protectContext(ctx, ctx => {
-    ctx.fillStyle = fill;
-    ctx.fillRect(0, 0, 420, 610);
-
-  });
+  if (!border) return;
+  ctx.drawImage(border, 0, 0, 420, 610);
 }
 
 const renderLevel: RenderCardComponent = (ctx, { level }) => {

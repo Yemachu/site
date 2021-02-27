@@ -2,12 +2,14 @@ import React, { useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Card, CardActions, CardMedia } from "@material-ui/core";
 import { upload } from "../upload/actions";
+import { saveAs } from "file-saver";
 
-export type RendererProps<T> = {
+export type RendererProps<T, U> = {
   readonly width: number;
   readonly height: number;
-  readonly render: (canvas: HTMLCanvasElement | null, state: T) => void;
+  readonly render: (canvas: HTMLCanvasElement | null, state: T, resources: U) => void;
   readonly state: T;
+  readonly resources: U;
 }
 
 export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
@@ -17,10 +19,11 @@ export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
     height,
     render,
     state,
+    resources,
   } = props;
   const dispatch = useDispatch();
 
-  const ref = useCallback((canvas)=>render(canvas, state), [render, state]);
+  const ref = useCallback((canvas)=>render(canvas, state, resources), [render, state, resources]);
 
   return <Card>
     <CardMedia 
@@ -44,6 +47,15 @@ export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
         }}
       >
         Upload
+      </Button>
+      <Button onClick={()=>{
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        render(canvas, state);
+        canvas.toBlob(blob => blob && saveAs(blob, "Image.png"), "image/png");
+      }}>
+        Save
       </Button>
     </CardActions>
   </Card>
