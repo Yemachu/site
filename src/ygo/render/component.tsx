@@ -42,7 +42,7 @@ export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
           const canvas = document.createElement("canvas");
           canvas.width = width;
           canvas.height = height;
-          render(canvas, state);
+          render(canvas, state, resources);
           dispatch(upload(canvas.toDataURL(), "Identifier"));
         }}
       >
@@ -52,7 +52,7 @@ export const Renderer = <T extends unknown>(props: RendererProps<T>) =>
         const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
-        render(canvas, state);
+        render(canvas, state, resources);
         canvas.toBlob(blob => blob && saveAs(blob, "Image.png"), "image/png");
       }}>
         Save
