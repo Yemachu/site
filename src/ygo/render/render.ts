@@ -201,7 +201,7 @@ const renderEffect: RenderCardComponent = (ctx, card) =>
     }
     return "";
   })
-  const renderer = new TextRenderer(ctx, 320);
+  const renderer = new TextRenderer(ctx, 350);
   let paragraphs: string[][][];
   
   let fontSize = 14.125;
@@ -222,7 +222,7 @@ const renderEffect: RenderCardComponent = (ctx, card) =>
       calculatedHeight = (lineHeight * fontSize * totalNumberOfLines) + ((paragraphs.length - 1) * paragraphSpacing);
     } while(maxHeight < calculatedHeight && 0 < fontSize);
   
-    ctx.translate(32, 470);
+    ctx.translate(35, 470);
     paragraphs.forEach(lines => 
     {
       lines.forEach((line, index) => 
