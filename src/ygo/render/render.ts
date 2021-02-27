@@ -12,9 +12,12 @@ const maxHeight = 200;
 import { font } from "../../utils";
 import { createResources } from "./resources";
 import { Rarity } from "../card/rarity";
+import { Attribute } from "../card/attribute";
 import { BorderAll } from "@material-ui/icons";
 
 import * as borders from "../images/border";
+import * as attributes from "../images/attribute";
+import * as stars from "../images/star";
 
 const useResourcesImpl = createResources({
   border: "",
@@ -56,11 +59,40 @@ const foilUrl = ({rarity}: Card): string | undefined =>
   }
 }
 
+const attributeUrl = ({ attribute }: Card): string | undefined =>
+{
+  switch(attribute)
+  {
+    case Attribute.NONE: return undefined;
+    case Attribute.DARK: return attributes.Dark;
+    case Attribute.DIVINE: return attributes.Divine;
+    case Attribute.EARTH: return attributes.Earth;
+    case Attribute.FIRE: return attributes.Fire;
+    case Attribute.LIGHT: return attributes.Light;
+    case Attribute.WATER: return attributes.Water;
+    case Attribute.WIND: return attributes.Wind;
+    case Attribute.SPELL: return attributes.Spell;
+    case Attribute.TRAP: return attributes.Trap;
+  }
+}
+
+const starUrl = ({ template }: Card): string | undefined =>
+{
+  switch(template)
+  {
+    case Template.XYZ: return stars.Xyz;
+    case Template.DARK_SYNCHRO: return stars.Negative;
+    default: return stars.Normal;
+  }
+}
+
 export const useResources = (card: Card) =>
 {
   return useResourcesImpl({
     border: templateUrl(card),
     foil: foilUrl(card),
+    attribute: attributeUrl(card),
+    star: starUrl(card),
   });
 }
 
@@ -101,7 +133,9 @@ const renderBorder: RenderCardComponent = (ctx, { template }, { border }) => {
   ctx.drawImage(border, 0, 0, 420, 610);
 }
 
-const renderLevel: RenderCardComponent = (ctx, { level }) => {
+const renderLevel: RenderCardComponent = (ctx, { level }, { star }) => {
+  if (!star) return;
+
   const { value, mirror } = level;
 
   let startOffset = 0;
@@ -114,35 +148,27 @@ const renderLevel: RenderCardComponent = (ctx, { level }) => {
     case 12: break;
     case 13: break;
   }
-
-  protectContext(ctx, ctx => {
-    ctx.beginPath();
-    for (let i=0; i < value; ++i)
-    {
-      ctx.ellipse((i-1) * (24 + spacing) + startOffset + 24, 48, 12, 12, 0, 0, Math.PI*2);
-    }
-    ctx.closePath();
-    ctx.fill();
-  });
+  for (let i = 0; i < value; ++i)
+  {
+    const x = (i - 1) * (24 + spacing) + startOffset + 24;
+    ctx.drawImage(star, x, 80, 20, 20);
+  }
 }
 
-const renderAttribute: RenderCardComponent = (ctx, { attribute }) =>
+const renderAttribute: RenderCardComponent = (ctx, { attribute }, { attribute: img }) =>
 {
-  protectContext(ctx, ctx => {
-    //ctx.fillStyle = 
-    ctx.beginPath();
-    ctx.ellipse(370, 16, 24, 24, 0, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.fill();
-  });
+  if (!img) return;
+  ctx.drawImage(img, 350, 24, 40, 40);
 }
 
 const renderName: RenderCardComponent = (ctx, { name }) =>
 {
+  const fontSize = 32;
   protectContext(ctx, ctx => {
     ctx.font = font({
       family: "Spectral SC",
-      size: 32
+      weight: "bold",
+      size: fontSize
     });
     const { width } = ctx.measureText(name);
     const maxWidth = 320;
@@ -151,7 +177,7 @@ const renderName: RenderCardComponent = (ctx, { name }) =>
     // It is important to move to the correct place
     // before applying the scale. Not doing so would
     // cause the text to move to the left as it grows.
-    ctx.translate(32, 32);
+    ctx.translate(32, 32 + fontSize);
     ctx.scale(Math.min(1, squishFactor), 1);
     ctx.fillText(name, 0, 0);
   });
@@ -196,7 +222,7 @@ const renderEffect: RenderCardComponent = (ctx, card) =>
       calculatedHeight = (lineHeight * fontSize * totalNumberOfLines) + ((paragraphs.length - 1) * paragraphSpacing);
     } while(maxHeight < calculatedHeight && 0 < fontSize);
   
-    ctx.translate(32, 360);
+    ctx.translate(32, 470);
     paragraphs.forEach(lines => 
     {
       lines.forEach((line, index) => 
