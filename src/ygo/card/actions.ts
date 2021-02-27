@@ -4,6 +4,8 @@ import { actions as attribute } from "./attribute";
 import { actions as template } from "./template";
 import { actions as rarity} from "./rarity";
 import { actions as effect } from "./effect";
+import { actions as pendulum } from "./pendulum";
+import { actions as copyright } from "./copyright"; 
 
 export type RootAction =
 | name.RootAction
@@ -12,6 +14,8 @@ export type RootAction =
 | template.RootAction
 | rarity.RootAction
 | effect.RootAction
+| pendulum.RootAction
+| copyright.RootAction
 ;
 
 export { 
@@ -20,6 +24,9 @@ export {
   attribute,
   template,
   rarity,
+  effect,
+  pendulum,
+  copyright,
 };
 
 export const all = [
@@ -29,4 +36,6 @@ export const all = [
   ...template.all,
   ...rarity.all,
   ...effect.all,
+  ...pendulum.all,
+  ...copyright.all,
 ];

@@ -8,7 +8,7 @@ import { CardEditor, Card } from "./card";
 
 import { state as AppState } from "./model";
 
-import { render as text} from "./render/render";
+import { render as text, useResources } from "./render/render";
 
 const Fallback = (): JSX.Element =>
 {
@@ -18,7 +18,7 @@ const Fallback = (): JSX.Element =>
   </>
 }
 
-const render = (canvas: HTMLCanvasElement | null, card?: Card) => {
+const render = (canvas: HTMLCanvasElement | null, card?: Card, resources?: any) => {
   if (!canvas) { return; }
   const ctx = canvas.getContext("2d");
   if (!ctx) { return; }
@@ -26,17 +26,24 @@ const render = (canvas: HTMLCanvasElement | null, card?: Card) => {
   ctx.clearRect(0,0,canvas.width, canvas.height);
   if (!card) return;
 
-  text(ctx, card);
+  text(ctx, card, resources);
 }
 
 export const YgoCardMaker = (): JSX.Element =>
 {
   const state = useSelector<any, ReturnType<typeof AppState>>(state => state);
+  const resources = useResources(state.cards[state?.selected||""]);
   return <Box p={2}>
     <Grid container spacing={2}>
       <Grid item xs={12} md={6} style={{overflow: "auto"}}>
         <ErrorBoundary fallback={<Fallback/>}>
-          <Renderer render={render} width={420} height={610} state={state.cards[state?.selected||""]}/>
+          <Renderer 
+            render={render} 
+            width={420} 
+            height={610} 
+            state={state.cards[state?.selected||""]} 
+            resources={resources} 
+          />
         </ErrorBoundary>
       </Grid>
       <Grid item xs={12} md={6}>
